@@ -1,4 +1,4 @@
-import axios from '../../src'
+import axios, { AxiosError } from '../../src'
 
 /**
  * 404
@@ -9,48 +9,48 @@ axios({
   .then(res => {
     console.log(res)
   })
-  .catch(e => {
-    console.error(e)
+  .catch((e: AxiosError) => {
+    console.error('AxiosError', e)
   })
 
-/**
- * networdk error
- */
-setTimeout(() => {
-  axios({
-    url: '/error/404'
-  })
-    .then(res => {
-      console.log(res)
-    })
-    .catch(e => {
-      console.error(e)
-    })
-}, 5000)
+// /**
+//  * networdk error
+//  */
+// setTimeout(() => {
+//   axios({
+//     url: '/error/404'
+//   })
+//     .then(res => {
+//       console.log(res)
+//     })
+//     .catch(e => {
+//       console.error(e)
+//     })
+// }, 5000)
 
-/**
- * 可能出现500错误
- */
-axios({
-  url: '/error/get'
-})
-  .then(res => {
-    console.log(res)
-  })
-  .catch(e => {
-    console.error(e)
-  })
+// /**
+//  * 可能出现500错误
+//  */
+// axios({
+//   url: '/error/get'
+// })
+//   .then(res => {
+//     console.log(res)
+//   })
+//   .catch(e => {
+//     console.error(e)
+//   })
 
-/**
- * 超时错误,timeout > 3000
- */
-axios({
-  url: '/error/timeout',
-  timeout: 2000
-})
-  .then(res => {
-    console.log(res)
-  })
-  .catch(e => {
-    console.error(e)
-  })
+// /**
+//  * 超时错误,timeout > 3000
+//  */
+// axios({
+//   url: '/error/timeout',
+//   timeout: 2000
+// })
+//   .then(res => {
+//     console.log(res)
+//   })
+//   .catch(e => {
+//     console.error(e)
+//   })

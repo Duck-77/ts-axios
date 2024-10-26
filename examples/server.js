@@ -42,7 +42,6 @@ router.post('/base/post', function(req, res) {
 
 router.post('/base/buffer', function(req, res) {
   let msg = []
-  let time = 0
   req.on('data', chunk => {
     if (chunk) {
       msg.push(chunk)

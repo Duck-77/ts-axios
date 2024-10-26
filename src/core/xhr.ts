@@ -1,6 +1,7 @@
-import { tranformResponse } from './helpers/data'
-import { parseResponseHanders } from './helpers/headers'
-import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from './types'
+import { tranformResponse } from '../helpers/data'
+import { createAxiosError } from '../helpers/error'
+import { parseResponseHanders } from '../helpers/headers'
+import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../types'
 
 function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
@@ -25,7 +26,15 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       if (response.status >= 200 && response.status < 300) {
         resolve(response)
       } else {
-        reject(new Error(`request failed with status code: ${response.status}`))
+        reject(
+          createAxiosError(
+            `request failed with status code: ${response.status}`,
+            config,
+            null,
+            request,
+            response
+          )
+        )
       }
     }
 
@@ -68,12 +77,12 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     // 处理请求失败错误
     request.onerror = function handleNetworkError() {
-      reject(new Error('network error'))
+      reject(createAxiosError('Network Error', config, null, request))
     }
 
     // 处理请求超时错误
     request.ontimeout = function handleTimeoutError() {
-      reject(new Error(`timeout of ${timeout} ms exceeded`))
+      reject(createAxiosError(`Timeout of ${timeout} ms exceeded`, config, 'ECONNABORTED', request))
     }
 
     // 发送请求

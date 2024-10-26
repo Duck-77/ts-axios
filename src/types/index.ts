@@ -1,3 +1,5 @@
+import { MyOmit } from './utils'
+
 export type Method =
   | 'get'
   | 'GET'
@@ -57,7 +59,7 @@ export interface AxiosResponse {
 export interface AxiosPromise extends Promise<AxiosResponse> {}
 
 /**
- * 添加Axios错误信息
+ * 定义Axios错误信息
  */
 export interface AxiosError extends Error {
   isAxiosError: boolean
@@ -65,4 +67,34 @@ export interface AxiosError extends Error {
   code?: string | null
   request?: any
   response?: AxiosResponse
+}
+
+export type NoUrlRequestConfig = MyOmit<AxiosRequestConfig, 'url'>
+
+/**
+ * Axios实例方法
+ */
+export interface Axios {
+  request(config: AxiosRequestConfig): AxiosPromise
+
+  get(url: string, config?: NoUrlRequestConfig): AxiosPromise
+
+  delete(url: string, config?: NoUrlRequestConfig): AxiosPromise
+
+  head(url: string, config?: NoUrlRequestConfig): AxiosPromise
+
+  options(url: string, config?: NoUrlRequestConfig): AxiosPromise
+
+  post(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise
+
+  put(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise
+
+  patch(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise
+}
+
+/**
+ * Axios实例接口
+ */
+export interface AxiosInstance extends Axios {
+  (config: AxiosRequestConfig): AxiosPromise
 }

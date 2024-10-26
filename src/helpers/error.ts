@@ -21,7 +21,7 @@ class AxiosError extends Error {
     this.response = response
     this.isAxiosError = true
 
-    //处理TS中调用super时，this指向上出问题的情况
+    // 处理TS中调用super时，this指向上出问题的情况
     Object.setPrototypeOf(this, AxiosError.prototype)
   }
 }
