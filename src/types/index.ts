@@ -29,6 +29,9 @@ export type Method =
 //   | 'Content-Encoding'
 //   | 'Authorization'
 
+/**
+ * Axios请求配置
+ */
 export interface AxiosRequestConfig {
   url: string
   method?: Method
@@ -39,6 +42,9 @@ export interface AxiosRequestConfig {
   timeout?: number
 }
 
+/**
+ * Axios响应类型
+ */
 export interface AxiosResponse {
   data: any
   status: number
@@ -49,3 +55,14 @@ export interface AxiosResponse {
 }
 
 export interface AxiosPromise extends Promise<AxiosResponse> {}
+
+/**
+ * 添加Axios错误信息
+ */
+export interface AxiosError extends Error {
+  isAxiosError: boolean
+  config: AxiosRequestConfig
+  code?: string | null
+  request?: any
+  response?: AxiosResponse
+}
