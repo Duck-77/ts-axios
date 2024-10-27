@@ -1,4 +1,5 @@
-import { MyOmit } from './utils'
+import { AxiosInterceptorManager } from './interceptor'
+import { MyOmit, MyPartial } from './utils'
 
 export type Method =
   | 'get'
@@ -22,24 +23,41 @@ export type Method =
   | 'unlink'
   | 'UNLINK'
 
-// type AxiosHeaderValue = string | string[] | number | boolean | null
+type AxiosHeaderValue = string | string[] | number | boolean | null
+type RawRequestHeaders = { [key: string]: AxiosHeaderValue }
+type RequestHeadersList =
+  | 'Accept'
+  | 'Content-Length'
+  | 'User-Agent'
+  | 'Content-Encoding'
+  | 'Authorization'
+type ContentType =
+  | 'text/html'
+  | 'text/plain'
+  | 'mutipart/form-data'
+  | 'application/json'
+  | 'application/x-www-form-urlencoded'
+  | 'application/octet-stream'
 
-// type RequestHeadersList =
-//   | 'Accept'
-//   | 'Content-Length'
-//   | 'User-Agent'
-//   | 'Content-Encoding'
-//   | 'Authorization'
+type RequestHeaders = MyPartial<
+  RawRequestHeaders & {
+    [key in RequestHeadersList]?: AxiosHeaderValue
+  } & { 'Content-Type': ContentType }
+>
+
+export interface IntervalAxiosRequestConfig<D = any> extends AxiosRequestConfig<D> {
+  headers: RequestHeaders
+}
 
 /**
  * Axios请求配置
  */
-export interface AxiosRequestConfig {
+export interface AxiosRequestConfig<D = any> {
   url: string
   method?: Method
-  data?: any
+  data?: D
   params?: any
-  headers?: any
+  headers?: RequestHeaders
   responseType?: XMLHttpRequestResponseType
   timeout?: number
 }
@@ -47,8 +65,8 @@ export interface AxiosRequestConfig {
 /**
  * Axios响应类型
  */
-export interface AxiosResponse {
-  data: any
+export interface AxiosResponse<T = any> {
+  data: T
   status: number
   statusText: string
   headers: any
@@ -56,7 +74,7 @@ export interface AxiosResponse {
   request: any
 }
 
-export interface AxiosPromise extends Promise<AxiosResponse> {}
+export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {}
 
 /**
  * 定义Axios错误信息
@@ -72,29 +90,36 @@ export interface AxiosError extends Error {
 export type NoUrlRequestConfig = MyOmit<AxiosRequestConfig, 'url'>
 
 /**
- * Axios实例方法
+ * Axios实例属性
  */
 export interface Axios {
-  request(config: AxiosRequestConfig): AxiosPromise
+  interceptors: {
+    request: AxiosInterceptorManager<IntervalAxiosRequestConfig>
+    response: AxiosInterceptorManager<AxiosResponse>
+  }
 
-  get(url: string, config?: NoUrlRequestConfig): AxiosPromise
+  request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
 
-  delete(url: string, config?: NoUrlRequestConfig): AxiosPromise
+  get<T = any>(url: string, config?: NoUrlRequestConfig): AxiosPromise<T>
 
-  head(url: string, config?: NoUrlRequestConfig): AxiosPromise
+  delete<T = any>(url: string, config?: NoUrlRequestConfig): AxiosPromise<T>
 
-  options(url: string, config?: NoUrlRequestConfig): AxiosPromise
+  head<T = any>(url: string, config?: NoUrlRequestConfig): AxiosPromise<T>
 
-  post(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise
+  options<T = any>(url: string, config?: NoUrlRequestConfig): AxiosPromise<T>
 
-  put(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise
+  post<T = any>(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise<T>
 
-  patch(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise
+  put<T = any>(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise<T>
+
+  patch<T = any>(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise<T>
 }
 
 /**
  * Axios实例接口
  */
 export interface AxiosInstance extends Axios {
-  (config: AxiosRequestConfig): AxiosPromise
+  /// 函数重载,两种传递参数的方式
+  <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
+  <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }

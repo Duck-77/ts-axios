@@ -1,4 +1,4 @@
-import axios from './core/dispatch'
+import axios from './axios'
 
 export default axios
 export * from './types'
