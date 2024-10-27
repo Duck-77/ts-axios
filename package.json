@@ -123,5 +123,8 @@
     "webpack": "^5.95.0",
     "webpack-dev-middleware": "^7.4.2",
     "webpack-hot-middleware": "^2.26.1"
+  },
+  "dependencies": {
+    "prettier": "^3.3.3"
   }
 }

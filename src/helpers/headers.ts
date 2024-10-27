@@ -1,4 +1,5 @@
-import { isPlainObject } from './utils'
+import { noDataMethods, useDataMethods } from '../default'
+import { deepMerge, isPlainObject } from './utils'
 
 /**
  * Axios的请求头参数大小写不敏感,但是最终发送给服务器的请求头参数统一为首字母大写
@@ -11,7 +12,7 @@ function normalizeHeadersName(headers: any, normalizeName: string): void {
     return
   }
 
-  Object.keys(headers).forEach(name => {
+  Object.keys(headers).forEach((name) => {
     if (name !== normalizeName && name.toUpperCase() === normalizeName.toUpperCase()) {
       headers[normalizeName] = headers[name]
       delete headers[name]
@@ -51,7 +52,7 @@ function parseResponseHanders(headers: string): { [key: string]: any } {
   }
   let result: { [key: string]: any } = {}
   const sentence = headers.split('\r\n')
-  sentence.forEach(item => {
+  sentence.forEach((item) => {
     const [key, value] = item.split(':')
     if (key && value) {
       result[key] = value.trim()
@@ -60,4 +61,23 @@ function parseResponseHanders(headers: string): { [key: string]: any } {
   return result
 }
 
-export { buildHeaders, buildHeaders as default, parseResponseHanders }
+/**
+ * 扁平化请求头，将common中的配置提取出来，并且删除没有用到的方法配置
+ * @param headers 请求头
+ * @param method 方法名
+ */
+function flattenHeaders(headers: any, method: string): any {
+  if (!headers) {
+    return headers
+  }
+  headers = deepMerge(headers.common, headers[method], headers)
+
+  const methods = [...useDataMethods, ...noDataMethods, 'common']
+  for (const m of methods) {
+    delete headers[m]
+  }
+
+  return headers
+}
+
+export { buildHeaders, buildHeaders as default, parseResponseHanders, flattenHeaders }

@@ -2,7 +2,7 @@ import { AxiosPromise, AxiosRequestConfig } from '../types'
 import { buildUrl } from '../helpers/url'
 import xhr from './xhr'
 import { tranformRequest } from '../helpers/data'
-import buildHeaders from '../helpers/headers'
+import buildHeaders, { flattenHeaders } from '../helpers/headers'
 
 export default function dispathRequest(config: AxiosRequestConfig): AxiosPromise {
   // 处理Axios配置
@@ -19,6 +19,7 @@ function processConfig(config: AxiosRequestConfig): void {
   config.url = transformUrl(config)
   config.headers = tranformRequestHeaders(config)
   config.data = tranformRequestData(config)
+  config.headers = flattenHeaders(config.headers, config.method!)
 }
 
 /**
@@ -27,7 +28,7 @@ function processConfig(config: AxiosRequestConfig): void {
  * @returns
  */
 function transformUrl(config: AxiosRequestConfig): string {
-  const { url, params } = config
+  const { url = '', params } = config
   return buildUrl(url, params)
 }
 

@@ -5,7 +5,7 @@ import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../types'
 
 function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = 'get', headers = {}, responseType, timeout } = config
+    const { data = null, url = '', method = 'get', headers = {}, responseType, timeout } = config
 
     const request = new XMLHttpRequest()
 
@@ -13,8 +13,8 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
     request.open(method.toUpperCase(), url, true)
 
     // 设置请求头
-    Object.keys(headers).forEach(name => {
-      request.setRequestHeader(name, headers[name])
+    Object.keys(headers).forEach((name) => {
+      request.setRequestHeader(name, headers[name] as string)
     })
 
     // 设置responseType
@@ -32,8 +32,8 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
             config,
             null,
             request,
-            response
-          )
+            response,
+          ),
         )
       }
     }
@@ -63,7 +63,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
         status,
         statusText,
         config,
-        request
+        request,
       }
 
       /// 完成Promise

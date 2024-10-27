@@ -39,25 +39,37 @@ type ContentType =
   | 'application/x-www-form-urlencoded'
   | 'application/octet-stream'
 
-type RequestHeaders = MyPartial<
+type AxiosRequestHeaders = MyPartial<
   RawRequestHeaders & {
     [key in RequestHeadersList]?: AxiosHeaderValue
-  } & { 'Content-Type': ContentType }
+  } & { 'Content-Type': ContentType } & { [key: string]: any }
 >
 
 export interface IntervalAxiosRequestConfig<D = any> extends AxiosRequestConfig<D> {
-  headers: RequestHeaders
+  headers: AxiosRequestHeaders
+}
+
+export interface HeaderDefaults {
+  common: AxiosRequestHeaders
+}
+
+export interface AxiosDefaults<D = any> extends Omit<AxiosRequestConfig<D>, 'headers'> {
+  headers: HeaderDefaults & {
+    [key: string]: any
+  }
 }
 
 /**
  * Axios请求配置
  */
 export interface AxiosRequestConfig<D = any> {
-  url: string
+  [key: string]: any
+
+  url?: string
   method?: Method
   data?: D
   params?: any
-  headers?: RequestHeaders
+  headers?: AxiosRequestHeaders
   responseType?: XMLHttpRequestResponseType
   timeout?: number
 }
@@ -93,33 +105,25 @@ export type NoUrlRequestConfig = MyOmit<AxiosRequestConfig, 'url'>
  * Axios实例属性
  */
 export interface Axios {
+  defaults: AxiosDefaults
   interceptors: {
     request: AxiosInterceptorManager<IntervalAxiosRequestConfig>
     response: AxiosInterceptorManager<AxiosResponse>
   }
-
   request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
-
   get<T = any>(url: string, config?: NoUrlRequestConfig): AxiosPromise<T>
-
   delete<T = any>(url: string, config?: NoUrlRequestConfig): AxiosPromise<T>
-
   head<T = any>(url: string, config?: NoUrlRequestConfig): AxiosPromise<T>
-
   options<T = any>(url: string, config?: NoUrlRequestConfig): AxiosPromise<T>
-
   post<T = any>(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise<T>
-
   put<T = any>(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise<T>
-
   patch<T = any>(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise<T>
 }
 
 /**
- * Axios实例接口
+ * Axios实例 & 重载
  */
 export interface AxiosInstance extends Axios {
-  /// 函数重载,两种传递参数的方式
   <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }

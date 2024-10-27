@@ -1,6 +1,6 @@
 import {
+  AxiosDefaults,
   AxiosPromise,
-  AxiosRequestConfig,
   AxiosResponse,
   IntervalAxiosRequestConfig,
   Method,
@@ -8,6 +8,7 @@ import {
 } from '../types'
 import dispathRequest from './dispatch'
 import InterceptorManager, { Interceptor } from './InterceptorManager'
+import configMerge from './merge'
 
 /**
  * 拦截器调用链的类型
@@ -15,7 +16,8 @@ import InterceptorManager, { Interceptor } from './InterceptorManager'
 type InterceptorChain<T> = Interceptor<T>[]
 
 class Axios {
-  constructor() {
+  constructor(defaultConfig: AxiosDefaults) {
+    this.defaults = defaultConfig
     /**
      * 初始化拦截器对象
      */
@@ -24,6 +26,8 @@ class Axios {
       response: new InterceptorManager<AxiosResponse>(),
     }
   }
+
+  defaults: IntervalAxiosRequestConfig
 
   // 拦截器对象
   interceptors: {
@@ -42,6 +46,10 @@ class Axios {
       // 传递了第一个参数,但是不为string类型,说明此时传递的是config
       config = url
     }
+
+    // 合并默认配置与实例配置
+    config = configMerge(this.defaults, config)
+    console.log(config)
 
     // 这里处理拦截器链式调用的问题
 
@@ -103,11 +111,11 @@ class Axios {
     return this._request_with_data('patch', url, data, config)
   }
 
-  _request_without_data(method: Method, url: string, config?: NoUrlRequestConfig) {
+  private _request_without_data(method: Method, url: string, config?: NoUrlRequestConfig) {
     return this.request(Object.assign(config || {}, { method, url }))
   }
 
-  _request_with_data(method: Method, url: string, data?: any, config?: NoUrlRequestConfig) {
+  private _request_with_data(method: Method, url: string, data?: any, config?: NoUrlRequestConfig) {
     return this.request(Object.assign(config || {}, { method, url, data }))
   }
 }

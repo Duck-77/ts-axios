@@ -22,7 +22,7 @@ export function isObject(value: any): value is Object {
  * @param to
  */
 export function isPlainObject(value: any): value is Object {
-  return Object.prototype.toString.call(value) === `[object Object]`
+  return isObject(value) && Object.prototype.toString.call(value) === `[object Object]`
 }
 
 /**
@@ -35,4 +35,31 @@ export function extend<T, U>(from: T, to: U): T & U {
     ;(to as T & U)[k] = from[k] as any
   }
   return to as T & U
+}
+
+/**
+ * 深度合并多个对象，后面对象的属性覆盖前面的
+ * @param objects 合并对象的集合
+ */
+export function deepMerge<T extends Record<string, any>>(...objectArray: T[]): T {
+  const result = Object.create(null)
+
+  for (const object of objectArray) {
+    // 遍历第n个对象
+    if (object) {
+      Object.keys(object).forEach((key) => {
+        const curValue = object[key]
+        if (isPlainObject(curValue)) {
+          if (isPlainObject(result[key])) {
+            result[key] = deepMerge(result[key], curValue)
+          } else {
+            result[key] = deepMerge(curValue)
+          }
+        } else {
+          result[key] = curValue
+        }
+      })
+    }
+  }
+  return result
 }
