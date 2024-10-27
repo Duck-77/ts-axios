@@ -1,4 +1,6 @@
 import { AxiosDefaults } from './types'
+import buildHeaders from './helpers/headers'
+import { tranformRequest, tranformResponse } from './helpers/data'
 
 const defaultConfig: AxiosDefaults = {
   url: '',
@@ -9,6 +11,17 @@ const defaultConfig: AxiosDefaults = {
       Accept: 'accplication/json, text/plain, */*',
     },
   },
+  transformRequest: [
+    function (data: any, headers: any): any {
+      buildHeaders(headers, data)
+      return tranformRequest(data)
+    },
+  ],
+  transformResponse: [
+    function (data: any): any {
+      return tranformResponse(data)
+    },
+  ],
 }
 export const useDataMethods = ['post', 'patch', 'put']
 export const noDataMethods = ['get', 'delete', 'options', 'head']

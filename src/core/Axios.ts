@@ -49,7 +49,6 @@ class Axios {
 
     // 合并默认配置与实例配置
     config = configMerge(this.defaults, config)
-    console.log(config)
 
     // 这里处理拦截器链式调用的问题
 

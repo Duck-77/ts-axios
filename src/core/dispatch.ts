@@ -1,14 +1,15 @@
-import { AxiosPromise, AxiosRequestConfig } from '../types'
+import { AxiosRequestConfig, AxiosResponse } from '../types'
 import { buildUrl } from '../helpers/url'
 import xhr from './xhr'
-import { tranformRequest } from '../helpers/data'
-import buildHeaders, { flattenHeaders } from '../helpers/headers'
+import { flattenHeaders } from '../helpers/headers'
+import transform from './transform'
 
-export default function dispathRequest(config: AxiosRequestConfig): AxiosPromise {
+export default async function dispathRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
   // 处理Axios配置
   processConfig(config)
   // 发送XHR请求 获取响应
-  return xhr(config)
+  const res = await xhr(config)
+  return processResponseData(res)
 }
 
 /**
@@ -17,8 +18,11 @@ export default function dispathRequest(config: AxiosRequestConfig): AxiosPromise
  */
 function processConfig(config: AxiosRequestConfig): void {
   config.url = transformUrl(config)
-  config.headers = tranformRequestHeaders(config)
-  config.data = tranformRequestData(config)
+  // config.headers = tranformRequestHeaders(config)
+  // config.data = tranformRequestData(config)
+  // 上面两行替换为下面的
+  const { data, headers } = config
+  config.data = transform(data, headers, config.transformRequest)
   config.headers = flattenHeaders(config.headers, config.method!)
 }
 
@@ -32,22 +36,26 @@ function transformUrl(config: AxiosRequestConfig): string {
   return buildUrl(url, params)
 }
 
-/**
- * 处理请求对象参数
- * @param config
- * @returns
- */
-function tranformRequestData(config: AxiosRequestConfig): string {
-  const { data } = config
-  return tranformRequest(data)
+function processResponseData(response: AxiosResponse): AxiosResponse {
+  return transform(response.data, response.headers, response.config.transformResponse)
 }
 
-/**
- * 处理请求头参数
- * @param config
- * @returns
- */
-function tranformRequestHeaders(config: AxiosRequestConfig): any {
-  const { headers = {}, data } = config
-  return buildHeaders(headers, data)
-}
+// /**
+//  * 处理请求对象参数
+//  * @param config
+//  * @returns
+//  */
+// function tranformRequestData(config: AxiosRequestConfig): string {
+//   const { data } = config
+//   return tranformRequest(data)
+// }
+
+// /**
+//  * 处理请求头参数
+//  * @param config
+//  * @returns
+//  */
+// function tranformRequestHeaders(config: AxiosRequestConfig): any {
+//   const { headers = {}, data } = config
+//   return buildHeaders(headers, data)
+// }

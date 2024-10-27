@@ -13,9 +13,9 @@ app.use(
     publicPath: '/__build__/',
     stats: {
       colors: true,
-      chunks: false
-    }
-  })
+      chunks: false,
+    },
+  }),
 )
 
 app.use(webpackHotMiddleware(compiler))
@@ -31,27 +31,28 @@ registerBaseRouter()
 registerErrorRouter()
 registerExtendRouter()
 registerInterceptorRouter()
+registerTransformRouter()
 
 function registerSimpleRouter() {
-  router.get('/simple/get', function(req, res) {
+  router.get('/simple/get', function (req, res) {
     res.json({
-      msg: `hello worldl`
+      msg: `hello worldl`,
     })
   })
 }
 
 function registerBaseRouter() {
-  router.get('/base/get', function(req, res) {
+  router.get('/base/get', function (req, res) {
     res.json(req.query)
   })
 
-  router.post('/base/post', function(req, res) {
+  router.post('/base/post', function (req, res) {
     res.json(req.body)
   })
 
-  router.post('/base/buffer', function(req, res) {
+  router.post('/base/buffer', function (req, res) {
     let msg = []
-    req.on('data', chunk => {
+    req.on('data', (chunk) => {
       if (chunk) {
         msg.push(chunk)
       }
@@ -65,62 +66,68 @@ function registerBaseRouter() {
 }
 
 function registerErrorRouter() {
-  router.get('/error/get', function(req, res) {
+  router.get('/error/get', function (req, res) {
     if (Math.random() > 0.5) {
       res.json({
-        msg: 'hello world'
+        msg: 'hello world',
       })
     } else {
       res.status(500).json({
-        msg: 'server error'
+        msg: 'server error',
       })
     }
   })
 
-  router.get('/error/timeout', function(req, res) {
+  router.get('/error/timeout', function (req, res) {
     setTimeout(() => {
       res.json({
-        msg: 'hello world'
+        msg: 'hello world',
       })
     }, 3000)
   })
 }
 
 function registerExtendRouter() {
-  router.get('/extend/get', function(_, res) {
+  router.get('/extend/get', function (_, res) {
     res.json({
-      msg: 'hello world'
+      msg: 'hello world',
     })
   })
 
-  router.delete('/extend/delete', function(_, res) {
+  router.delete('/extend/delete', function (_, res) {
     res.end()
   })
 
-  router.options('/extend/options', function(_, res) {
+  router.options('/extend/options', function (_, res) {
     res.end()
   })
 
-  router.head('/extend/head', function(_, res) {
+  router.head('/extend/head', function (_, res) {
     res.end()
   })
 
-  router.post('/extend/post', function(req, res) {
+  router.post('/extend/post', function (req, res) {
     res.json(req.body)
   })
 
-  router.put('/extend/put', function(req, res) {
+  router.put('/extend/put', function (req, res) {
     res.json(req.body)
   })
 
-  router.patch('/extend/patch', function(req, res) {
+  router.patch('/extend/patch', function (req, res) {
     res.json(req.body)
   })
 }
 
-function registerInterceptorRouter(){
-  router.get('/interceptor/get',function(req,res){
+function registerInterceptorRouter() {
+  router.get('/interceptor/get', function (req, res) {
     res.send(`200Ok`)
+  })
+}
+
+function registerTransformRouter() {
+  router.post('/transform/post', function (req, res) {
+    res.send(req.body)
   })
 }
 

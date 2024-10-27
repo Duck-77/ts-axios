@@ -49,22 +49,24 @@ export interface IntervalAxiosRequestConfig<D = any> extends AxiosRequestConfig<
   headers: AxiosRequestHeaders
 }
 
-export interface HeaderDefaults {
+export interface HeaderDefaults extends AxiosRequestHeaders {
   common: AxiosRequestHeaders
 }
 
-export interface AxiosDefaults<D = any> extends Omit<AxiosRequestConfig<D>, 'headers'> {
+export interface AxiosDefaults<D = any> extends AxiosRequestConfig<D> {
   headers: HeaderDefaults & {
     [key: string]: any
   }
+}
+
+export interface AxiosTransformer {
+  (data: any, headers?: any): any
 }
 
 /**
  * Axios请求配置
  */
 export interface AxiosRequestConfig<D = any> {
-  [key: string]: any
-
   url?: string
   method?: Method
   data?: D
@@ -72,6 +74,10 @@ export interface AxiosRequestConfig<D = any> {
   headers?: AxiosRequestHeaders
   responseType?: XMLHttpRequestResponseType
   timeout?: number
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
+
+  [key: string]: any
 }
 
 /**
@@ -126,4 +132,11 @@ export interface Axios {
 export interface AxiosInstance extends Axios {
   <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+}
+
+/**
+ *
+ */
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosDefaults): AxiosInstance
 }
