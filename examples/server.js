@@ -7,7 +7,7 @@ const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
 
 //启动8088端口服务
-require("./server2")
+require('./server2')
 
 const app = express()
 const compiler = webpack(WebpackConfig)
@@ -23,7 +23,13 @@ app.use(
 )
 
 app.use(webpackHotMiddleware(compiler))
-app.use(express.static(__dirname))
+app.use(
+  express.static(__dirname, {
+    setHeaders(res) {
+      res.cookie('XSRF-TOKEN-D', 'qwerty')
+    },
+  }),
+)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -39,6 +45,7 @@ registerInterceptorRouter()
 registerTransformRouter()
 regitsterCancelRouter()
 registerWithCredentialRouter()
+registerXSRFRouter()
 
 function registerSimpleRouter() {
   router.get('/simple/get', function (req, res) {
@@ -155,9 +162,16 @@ function regitsterCancelRouter() {
 function registerWithCredentialRouter() {
   router.post('/credentials/post', function (req, res) {
     res.json({
-      name:'同源',
-      ...req.cookies
+      name: '同源',
+      ...req.cookies,
     })
+  })
+}
+
+function registerXSRFRouter() {
+  router.get('/xsrf/get', function (req, res) {
+    /** 同源情况下,直接获取cookie中的 */
+    res.json({ token: req.cookies['XSRF-TOKEN-D'] })
   })
 }
 

@@ -11,6 +11,8 @@ const defaultConfig: AxiosDefaults = {
       Accept: 'accplication/json, text/plain, */*',
     },
   },
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
   transformRequest: [
     function (data: any, headers: any): any {
       buildHeaders(headers, data)
