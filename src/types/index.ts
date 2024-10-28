@@ -1,3 +1,4 @@
+import { CancelStatic, CancelToken, CancelTokenStatic } from './canceltoken'
 import { AxiosInterceptorManager } from './interceptor'
 import { MyOmit, MyPartial } from './utils'
 
@@ -76,6 +77,7 @@ export interface AxiosRequestConfig<D = any> {
   timeout?: number
   transformRequest?: AxiosTransformer | AxiosTransformer[]
   transformResponse?: AxiosTransformer | AxiosTransformer[]
+  cancelToken?: CancelToken
 
   [key: string]: any
 }
@@ -139,4 +141,8 @@ export interface AxiosInstance extends Axios {
  */
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosDefaults): AxiosInstance
+
+  CancelToken: CancelTokenStatic
+  Cancel: CancelStatic
+  isCancel: (value: any) => boolean
 }

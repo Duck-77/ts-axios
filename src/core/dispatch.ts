@@ -5,6 +5,8 @@ import { flattenHeaders } from '../helpers/headers'
 import transform from './transform'
 
 export default async function dispathRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
+  // 处理重复请求的情况
+  processRepeatRequest(config)
   // 处理Axios配置
   processConfig(config)
   // 发送XHR请求 获取响应
@@ -38,6 +40,12 @@ function transformUrl(config: AxiosRequestConfig): string {
 
 function processResponseData(response: AxiosResponse): AxiosResponse {
   return transform(response.data, response.headers, response.config.transformResponse)
+}
+
+function processRepeatRequest(config: AxiosRequestConfig): void {
+  if (config.cancelToken) {
+    config.cancelToken.repeatRequest()
+  }
 }
 
 // /**
