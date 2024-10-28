@@ -1,10 +1,10 @@
 import {
   AxiosDefaults,
   AxiosPromise,
+  AxiosRequestConfig,
   AxiosResponse,
   IntervalAxiosRequestConfig,
   Method,
-  NoUrlRequestConfig,
 } from '../types'
 import dispathRequest from './dispatch'
 import InterceptorManager, { Interceptor } from './InterceptorManager'
@@ -82,39 +82,39 @@ class Axios {
     return promise
   }
 
-  get(url: string, config?: NoUrlRequestConfig): AxiosPromise {
+  get(url: string, config?: AxiosRequestConfig): AxiosPromise {
     return this._request_without_data('get', url, config)
   }
 
-  delete(url: string, config?: NoUrlRequestConfig): AxiosPromise {
+  delete(url: string, config?: AxiosRequestConfig): AxiosPromise {
     return this._request_without_data('delete', url, config)
   }
 
-  head(url: string, config?: NoUrlRequestConfig): AxiosPromise {
+  head(url: string, config?: AxiosRequestConfig): AxiosPromise {
     return this._request_without_data('head', url, config)
   }
 
-  options(url: string, config?: NoUrlRequestConfig): AxiosPromise {
+  options(url: string, config?: AxiosRequestConfig): AxiosPromise {
     return this._request_without_data('options', url, config)
   }
 
-  post(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise {
+  post(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
     return this._request_with_data('post', url, data, config)
   }
 
-  put(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise {
+  put(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
     return this._request_with_data('put', url, data, config)
   }
 
-  patch(url: string, data?: any, config?: NoUrlRequestConfig): AxiosPromise {
+  patch(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
     return this._request_with_data('patch', url, data, config)
   }
 
-  private _request_without_data(method: Method, url: string, config?: NoUrlRequestConfig) {
+  private _request_without_data(method: Method, url: string, config?: AxiosRequestConfig) {
     return this.request(Object.assign(config || {}, { method, url }))
   }
 
-  private _request_with_data(method: Method, url: string, data?: any, config?: NoUrlRequestConfig) {
+  private _request_with_data(method: Method, url: string, data?: any, config?: AxiosRequestConfig) {
     return this.request(Object.assign(config || {}, { method, url, data }))
   }
 }

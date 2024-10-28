@@ -26,13 +26,13 @@ export function isPlainObject(value: any): value is Object {
 }
 
 /**
- * 将from中的属性和方法拷贝到to中
- * @param from
- * @param to
+ * 将 from 中的属性和方法拷贝到 to 中
+ * @param from - 源对象
+ * @param to - 目标对象
  */
 export function extend<T, U>(from: T, to: U): T & U {
-  for (const k in from) {
-    ;(to as T & U)[k] = from[k] as any
+  for (const key in from) {
+    ;(to as T & U)[key] = (from as any)[key]
   }
   return to as T & U
 }

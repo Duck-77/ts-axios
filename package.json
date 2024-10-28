@@ -20,6 +20,7 @@
   },
   "scripts": {
     "dev": "node examples/server.js",
+    "cors": "node examples/server2.js",
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
@@ -126,6 +127,8 @@
   },
   "dependencies": {
     "@types/qs": "^6.9.16",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "prettier": "^3.3.3",
     "qs": "^6.13.0"
   }

@@ -11,8 +11,8 @@ class CancelToken {
       resolve = res
     })
 
-    executor((message = '') => {
-      // 防止多次调用
+    executor((message) => {
+      // 防止同一个CancelToken请求被阻止后多次调用
       if (this.reason) {
         return
       }

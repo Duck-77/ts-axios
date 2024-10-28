@@ -1,9 +1,13 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
+
+//启动8088端口服务
+require("./server2")
 
 const app = express()
 const compiler = webpack(WebpackConfig)
@@ -23,6 +27,7 @@ app.use(express.static(__dirname))
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cookieParser())
 
 const router = express.Router()
 
@@ -32,6 +37,8 @@ registerErrorRouter()
 registerExtendRouter()
 registerInterceptorRouter()
 registerTransformRouter()
+regitsterCancelRouter()
+registerWithCredentialRouter()
 
 function registerSimpleRouter() {
   router.get('/simple/get', function (req, res) {
@@ -128,6 +135,29 @@ function registerInterceptorRouter() {
 function registerTransformRouter() {
   router.post('/transform/post', function (req, res) {
     res.send(req.body)
+  })
+}
+
+function regitsterCancelRouter() {
+  router.get('/cancel/get', function (req, res) {
+    setTimeout(() => {
+      res.json('hello')
+    }, 1000)
+  })
+
+  router.post('/cancel/post', function (req, res) {
+    setTimeout(() => {
+      res.json(req.body)
+    })
+  })
+}
+
+function registerWithCredentialRouter() {
+  router.post('/credentials/post', function (req, res) {
+    res.json({
+      name:'同源',
+      ...req.cookies
+    })
   })
 }
 

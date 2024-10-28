@@ -13,6 +13,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       responseType,
       timeout,
       cancelToken,
+      withCredentials,
     } = config
 
     const request = new XMLHttpRequest()
@@ -28,6 +29,11 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
         request.setRequestHeader(name, headers[name] as string)
       }
     })
+
+    // 允许跨域携带cookie
+    if (withCredentials) {
+      request.withCredentials = withCredentials
+    }
 
     // 设置responseType
     if (responseType) {
@@ -101,7 +107,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
     if (cancelToken) {
       cancelToken.promise.then((reason) => {
         request.abort()
-        reject(reason) //将错误传递下去
+        reject(reason) // 将错误传递下去
       })
     }
 

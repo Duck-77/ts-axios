@@ -38,10 +38,16 @@ export interface CancelTokenStatic {
   source(): CancelTokenSource
 }
 
+/**
+ * Cancel类，请求取消类：承载取消信息
+ */
 export interface Cancel {
   message?: string
 }
 
+/**
+ * Cancel的类类型
+ */
 export interface CancelStatic {
   new (message?: string): Cancel
 }

@@ -5,7 +5,7 @@ import { flattenHeaders } from '../helpers/headers'
 import transform from './transform'
 
 export default async function dispathRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
-  // 处理重复请求的情况
+  // 处理使用同一个cancelToken取消后重复请求的情况
   processRepeatRequest(config)
   // 处理Axios配置
   processConfig(config)
