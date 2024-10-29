@@ -1,0 +1,13 @@
+{
+  "extends": ["tslint-config-standard", "tslint-config-prettier"],
+  "rules": {
+    "max-line-length": {
+      "options": [120]
+    }
+  },
+  "jsRules": {
+    "max-line-length": {
+      "options": [120]
+    }
+  }
+}
