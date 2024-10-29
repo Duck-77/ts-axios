@@ -8,6 +8,7 @@ const multipart = require('connect-multiparty')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
+const atob = require('atob')
 
 //启动8088端口服务
 require('./server2')
@@ -197,7 +198,6 @@ function registerXSRFRouter() {
 
 function registerProgressRouter() {
   router.post('/onprogress/upload', function (req, res) {
-    console.log('req',req)
     if (!req.files && !req.body) {
       return res.status(400).send('No files Upload!')
     } else {
@@ -205,6 +205,38 @@ function registerProgressRouter() {
     }
   })
 }
+
+function registerAuthRouter() {
+  router.post('/auth/post', function (req, res) {
+    res.setHeader('content-type', 'text/plain')
+
+    const auth = req.headers['authorization']
+    const [type, credentails] = auth.split(' ')
+    const [username, password] = atob(credentails).split(':')
+    if (type === 'Basic' && username === 'qyq' && password === '123456') {
+      const msg = 'hello world!'
+      let _resolve = null
+      const promise = new Promise((resolve) => {
+        _resolve = resolve
+      })
+      for (let i = 0; i < msg.length; i++) {
+        setTimeout(() => {
+          res.write(msg[i])
+          if (i === msg.length - 1) {
+            _resolve()
+          }
+        }, i * 300)
+      }
+      promise.then(() => {
+        res.end()
+      })
+    } else {
+      res.status(401).send({ msg: 'UnAuthorization' })
+    }
+  })
+}
+
+registerAuthRouter()
 
 app.use(router)
 

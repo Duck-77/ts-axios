@@ -31,7 +31,7 @@ function deepMergeStrategy(value1: any, value2: any): any {
 
 // 特殊字段
 const SepicalKeys = ['url', 'data']
-const DeepKeys = ['headers', 'params']
+const DeepKeys = ['headers', 'params', 'auth']
 // 根据key来分配不同的合并策略
 const mergeStrategy: { [key: string]: (form: any, to: any) => any } = {}
 for (const key of SepicalKeys) {

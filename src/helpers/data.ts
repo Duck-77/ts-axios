@@ -1,3 +1,4 @@
+import { AxiosResponse } from '../types'
 import { isObject, isPlainObject } from './utils'
 
 /**
@@ -17,13 +18,17 @@ function tranformRequest(data: any): any {
  * @param data
  * @returns
  */
-function tranformResponse(data: any): any {
+function tranformResponse(data: any, response?: AxiosResponse): AxiosResponse {
   if (typeof data === 'string') {
     try {
       data = JSON.parse(data)
     } catch (e) {
       // TODO
     }
+  }
+  if (response) {
+    response.data = data
+    return response
   }
   return data
 }

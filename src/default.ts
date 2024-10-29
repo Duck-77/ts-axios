@@ -1,4 +1,4 @@
-import { AxiosDefaults } from './types'
+import { AxiosDefaults, AxiosResponse } from './types'
 import buildHeaders from './helpers/headers'
 import { tranformRequest, tranformResponse } from './helpers/data'
 
@@ -20,10 +20,14 @@ const defaultConfig: AxiosDefaults = {
     },
   ],
   transformResponse: [
-    function (data: any): any {
-      return tranformResponse(data)
+    function (data: any, _, response: AxiosResponse): any {
+      return tranformResponse(data, response)
     },
   ],
+
+  validateStatus(status) {
+    return status >= 200 && status < 300
+  },
 }
 export const useDataMethods = ['post', 'patch', 'put']
 export const noDataMethods = ['get', 'delete', 'options', 'head']

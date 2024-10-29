@@ -1,4 +1,4 @@
-import { AxiosTransformer } from '../types'
+import { AxiosResponse, AxiosTransformer } from '../types'
 
 /**
  * 一体式data处理函数
@@ -11,6 +11,7 @@ function tansform(
   data: any,
   headers: any,
   transformers?: AxiosTransformer | AxiosTransformer[],
+  response?: AxiosResponse,
 ): any {
   if (!transformers) {
     return data
@@ -21,7 +22,7 @@ function tansform(
   }
 
   transformers.forEach((tansformer) => {
-    data = tansformer(data, headers)
+    data = tansformer(data, headers, response)
   })
 
   return data

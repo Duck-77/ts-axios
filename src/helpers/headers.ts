@@ -26,12 +26,12 @@ function normalizeHeadersName(headers: any, normalizeName: string): void {
  * @param data 请求体
  */
 function buildHeaders(headers: any, data: any): any {
-  // 处理请求头参数的大小写问题
+  // 规范请求头：首字母大写
   normalizeHeadersName(headers, 'Content-Type')
 
   // 当传入的值为原始对象类型时，进行headers处理
   if (isPlainObject(data)) {
-    if (headers && !headers['Content-Type']) {
+    if (headers) {
       headers['Content-Type'] = 'application/json;charset=utf-8'
     }
   } else if (data === null && headers['Content-Type']) {

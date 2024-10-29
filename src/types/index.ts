@@ -61,7 +61,12 @@ export interface AxiosDefaults<D = any> extends AxiosRequestConfig<D> {
 }
 
 export interface AxiosTransformer {
-  (data: any, headers?: any): any
+  (data: any, headers?: any, response?: any): any
+}
+
+export interface AxiosBasicCredentials {
+  username?: string
+  password?: string
 }
 
 /**
@@ -81,6 +86,8 @@ export interface AxiosRequestConfig<D = any> {
   withCredentials?: boolean
   xsrfCookieName?: string
   xsrfHeaderName?: string
+  auth?: AxiosBasicCredentials
+  validateStatus?: (status: number) => boolean
   onDownloadProgress?: (e: ProgressEvent) => void
   onUploadProgress?: (e: ProgressEvent) => void
 

@@ -35,7 +35,7 @@ function transformUrl(config: AxiosRequestConfig): string {
 }
 
 function processResponseData(response: AxiosResponse): AxiosResponse {
-  return transform(response.data, response.headers, response.config.transformResponse)
+  return transform(response.data, response.headers, response.config.transformResponse, response)
 }
 
 function processRepeatRequest(config: AxiosRequestConfig): void {

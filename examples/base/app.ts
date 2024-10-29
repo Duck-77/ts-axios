@@ -1,24 +1,31 @@
 import axios from '../../src'
 
-// // 请求参数为数组
-// axios({
-//   method: 'get',
-//   url: '/base/get',
-//   params: {
-//     foo: ['bar', 'baz']
-//   }
-// })
+// 请求参数为数组
+axios({
+  method: 'get',
+  url: '/base/get',
+  params: {
+    foo: ['bar', 'baz']
+  }
+})
 
-// // 请求参数为对象
-// axios({
-//   method: 'get',
-//   url: '/base/get',
-//   params: {
-//     foo: {
-//       bar: 'baz'
-//     }
-//   }
-// })
+axios('/base/get',{
+  method: 'get',
+  params: {
+    foo: ['bar', 'baz']
+  }
+})
+
+// 请求参数为对象
+axios({
+  method: 'get',
+  url: '/base/get',
+  params: {
+    foo: {
+      bar: 'baz'
+    }
+  }
+})
 
 // // 请求参数为日期
 // const date = new Date()

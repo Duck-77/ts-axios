@@ -21,6 +21,8 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       xsrfHeaderName,
       onDownloadProgress,
       onUploadProgress,
+      auth,
+      validateStatus,
     } = config
 
     const request = new XMLHttpRequest()
@@ -38,9 +40,11 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
 
     /** 设置请求头 */
-    // if(isFormData(data)){
-    //   delete headers['Content-Type']
-    // }
+
+    if (auth) {
+      headers['Authorization'] = `Basic ${btoa(auth.username + ':' + auth.password)}`
+    }
+
     Object.keys(headers).forEach((name) => {
       if (!data && name.toLowerCase() === 'content-type') {
         delete headers[name]
@@ -60,7 +64,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
 
     const handleResponseResolve = (response: AxiosResponse): void => {
-      if (response.status >= 200 && response.status < 300) {
+      if (!validateStatus || validateStatus(response.status)) {
         resolve(response)
       } else {
         reject(
@@ -77,6 +81,11 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     /** 处理响应 */
     request.onreadystatechange = () => {
+      /** 正在接收流式数据 */
+      if (request.readyState === 3) {
+        console.log('request.responseText', request.responseText)
+      }
+
       if (request.readyState !== XMLHttpRequest.DONE) {
         return
       }
