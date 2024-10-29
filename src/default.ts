@@ -29,7 +29,7 @@ export const useDataMethods = ['post', 'patch', 'put']
 export const noDataMethods = ['get', 'delete', 'options', 'head']
 useDataMethods.forEach((method) => {
   defaultConfig.headers![method] = {
-    'Content-type': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/x-www-form-urlencoded',
   }
 })
 noDataMethods.forEach((method) => {

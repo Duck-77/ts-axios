@@ -6,7 +6,7 @@ import {
   IntervalAxiosRequestConfig,
   Method,
 } from '../types'
-import dispathRequest from './dispatch'
+import dispatchRequest from './dispatch'
 import InterceptorManager, { Interceptor } from './InterceptorManager'
 import configMerge from './merge'
 
@@ -55,7 +55,7 @@ class Axios {
     /// 拦截器调用链
     const interceptorChain: InterceptorChain<any> = [
       {
-        onFullfilled: dispathRequest,
+        onFullfilled: dispatchRequest,
         onRejected: undefined,
       },
     ]

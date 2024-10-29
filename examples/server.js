@@ -1,7 +1,10 @@
 const express = require('express')
+const path = require('path')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const webpack = require('webpack')
+const multer = require('multer')
+const multipart = require('connect-multiparty')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
@@ -31,9 +34,25 @@ app.use(
   }),
 )
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json({ limit: '50mb' }))
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+    limit: '50mb',
+    paramterLimit: 50000,
+  }),
+)
 app.use(cookieParser())
+app.use(
+  multipart({
+    uploadDir: path.resolve(__dirname, 'upload-file'),
+    maxFilesSize: 10 * 1024 * 1024,
+  }),
+)
+
+const upload = multer({
+  limits: { fileSize: 1024 * 1024 * 10 },
+})
 
 const router = express.Router()
 
@@ -46,6 +65,7 @@ registerTransformRouter()
 regitsterCancelRouter()
 registerWithCredentialRouter()
 registerXSRFRouter()
+registerProgressRouter()
 
 function registerSimpleRouter() {
   router.get('/simple/get', function (req, res) {
@@ -172,6 +192,17 @@ function registerXSRFRouter() {
   router.get('/xsrf/get', function (req, res) {
     /** 同源情况下,直接获取cookie中的 */
     res.json({ token: req.cookies['XSRF-TOKEN-D'] })
+  })
+}
+
+function registerProgressRouter() {
+  router.post('/onprogress/upload', function (req, res) {
+    console.log('req',req)
+    if (!req.files && !req.body) {
+      return res.status(400).send('No files Upload!')
+    } else {
+      return res.end('upload success!')
+    }
   })
 }
 

@@ -1,5 +1,5 @@
 import { noDataMethods, useDataMethods } from '../default'
-import { deepMerge, isPlainObject } from './utils'
+import { deepMerge, isFormData, isPlainObject } from './utils'
 
 /**
  * Axios的请求头参数大小写不敏感,但是最终发送给服务器的请求头参数统一为首字母大写
@@ -36,8 +36,11 @@ function buildHeaders(headers: any, data: any): any {
     }
   } else if (data === null && headers['Content-Type']) {
     delete headers['Content-Type']
+  } else if (isFormData(data)) {
+    /** 下面这一行不要手动添加，浏览器会自动识别上传内容并自动添加multipart/form-data请求头和很关键的的boundary */
+    // headers['Content-Type'] = 'multipart/form-data;'
+    delete headers['Content-Type']
   }
-
   return headers
 }
 
@@ -76,7 +79,6 @@ function flattenHeaders(headers: any, method: string): any {
   for (const m of methods) {
     delete headers[m]
   }
-
   return headers
 }
 

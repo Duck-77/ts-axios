@@ -17,7 +17,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '__build__'),
     filename: '[name].js',
-    publicPath: '/__build__/'
+    publicPath: '/__build__/',
   },
 
   module: {
@@ -27,9 +27,9 @@ module.exports = {
         enforce: 'pre',
         use: [
           {
-            loader: 'tslint-loader'
-          }
-        ]
+            loader: 'tslint-loader',
+          },
+        ],
       },
       {
         test: /\.tsx?$/,
@@ -37,18 +37,22 @@ module.exports = {
           {
             loader: 'ts-loader',
             options: {
-              transpileOnly: true
-            }
-          }
-        ]
-      }
-    ]
+              transpileOnly: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.ts', '.tsx', '.js'],
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
-  ]
+    new webpack.NoEmitOnErrorsPlugin(),
+  ],
 }

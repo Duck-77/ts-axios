@@ -3,6 +3,7 @@ import { tranformResponse } from '../helpers/data'
 import { createAxiosError } from '../helpers/error'
 import { parseResponseHanders } from '../helpers/headers'
 import { isSameOriginURL } from '../helpers/url'
+import { isFormData } from '../helpers/utils'
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../types'
 
 function xhr(config: AxiosRequestConfig): AxiosPromise {
@@ -18,6 +19,8 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       withCredentials,
       xsrfCookieName,
       xsrfHeaderName,
+      onDownloadProgress,
+      onUploadProgress,
     } = config
 
     const request = new XMLHttpRequest()
@@ -30,11 +33,14 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       const CookieValue = cookie.read(xsrfCookieName)
       if (xsrfHeaderName && CookieValue) {
         headers[xsrfHeaderName] = CookieValue
-        headers['Authorization'] = 'abc'
+        headers['Authorization'] = 'Bearer aaa'
       }
     }
 
     /** 设置请求头 */
+    // if(isFormData(data)){
+    //   delete headers['Content-Type']
+    // }
     Object.keys(headers).forEach((name) => {
       if (!data && name.toLowerCase() === 'content-type') {
         delete headers[name]
@@ -99,6 +105,15 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
 
       /** 完成Promise */
       handleResponseResolve(response)
+    }
+
+    /** 进度监控 */
+    if (onDownloadProgress) {
+      request.onprogress = onDownloadProgress
+    }
+
+    if (onUploadProgress) {
+      request.upload.onprogress = onUploadProgress
     }
 
     /** 设置请求超时时间 */

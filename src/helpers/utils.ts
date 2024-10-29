@@ -26,6 +26,15 @@ export function isPlainObject(value: any): value is Object {
 }
 
 /**
+ * 判断一个值是FormData类型
+ * @param {any} value
+ * @returns
+ */
+export function isFormData(value: any): value is FormData {
+  return typeof value !== 'undefined' && value instanceof FormData
+}
+
+/**
  * 将 from 中的属性和方法拷贝到 to 中
  * @param from - 源对象
  * @param to - 目标对象
