@@ -6,7 +6,7 @@ import {
   IntervalAxiosRequestConfig,
   Method,
 } from '../types'
-import dispatchRequest from './dispatch'
+import dispatchRequest, { transformUrl } from './dispatch'
 import InterceptorManager, { Interceptor } from './InterceptorManager'
 import configMerge from './merge'
 
@@ -27,7 +27,7 @@ class Axios {
     }
   }
 
-  defaults: IntervalAxiosRequestConfig
+  defaults: AxiosDefaults
 
   // 拦截器对象
   interceptors: {
@@ -108,6 +108,11 @@ class Axios {
 
   patch(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
     return this._request_with_data('patch', url, data, config)
+  }
+
+  getUri(config?: AxiosRequestConfig): string {
+    config = configMerge(this.defaults, config)
+    return transformUrl(config)
   }
 
   private _request_without_data(method: Method, url: string, config?: AxiosRequestConfig) {

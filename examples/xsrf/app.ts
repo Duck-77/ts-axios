@@ -1,9 +1,9 @@
 import axios from '../../src'
-const baseUrl = 'http://localhost:8088'
+const baseURL = 'http://localhost:8088'
 
 // 跨域
 axios({
-  url: baseUrl + '/cross/xsrf/get',
+  url: baseURL + '/cross/xsrf/get',
   withCredentials: true,
   xsrfCookieName: 'XSRF-TOKEN-D',
   xsrfHeaderName: 'XSRF-TOKEN-D',

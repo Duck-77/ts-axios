@@ -1,4 +1,4 @@
-import { isDate, isPlainObject } from './utils'
+import { isDate, isPlainObject, isURLSearchParams } from './utils'
 
 /**
  * 将传入的字符串进行URLComponent化,但是将特殊字符的转化还原
@@ -22,53 +22,66 @@ function encode(value: string): string {
  * @param params Axios配置的params参数
  * @returns
  */
-function buildUrl(url: string, params?: any): string {
+export function buildURL(
+  url: string,
+  params?: any,
+  paramsSerializer?: (params: any) => string,
+): string {
   if (!params) {
     return url
   }
 
-  const parts: string[] = []
-  /**
-   * 1.排除为空的params参数
-   * 2.处理params参数为数组的情况
-   * 3.
-   */
-  Object.keys(params).forEach((key) => {
-    const param = params[key]
-    if (!param || param === undefined || param === null) {
-      return
-    }
-    let values = []
-    if (Array.isArray(param)) {
-      values = param
-      key += '[]'
-    } else {
-      values = [param]
-    }
+  let serializedParams
 
-    values.forEach((param) => {
-      /**
-       * 1.如果是日期类型,需要转化为toISOString
-       * 2.如果是纯对象类型,则转化为JSON字符串
-       * 3.处理key和value的转义并原话为原始传入的参数key和value
-       */
-      if (isDate(param)) {
-        param = param.toISOString()
-      } else if (isPlainObject(param)) {
-        param = JSON.stringify(param)
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params)
+  } else if (isURLSearchParams(url)) {
+    serializedParams = url.toString()
+  } else {
+    const parts: string[] = []
+    /**
+     * 1.排除为空的params参数
+     * 2.处理params参数为数组的情况
+     * 3.
+     */
+    Object.keys(params).forEach((key) => {
+      const param = params[key]
+      if (!param || param === undefined || param === null) {
+        return
       }
-      const encodeKey = encode(key)
-      const encodeValue = encode(param)
-      parts.push(`${encodeKey}=${encodeValue}`)
-    })
-  })
+      let values = []
+      if (Array.isArray(param)) {
+        values = param
+        key += '[]'
+      } else {
+        values = [param]
+      }
 
-  /**
-   * 1.将key和value拼接的值数组进行拼接
-   * 2.去掉路径中的hash符号#
-   * 3.保留url中之前的参数值,如果有则添加&没有则是?
-   */
-  let serializedParams = parts.join('&')
+      values.forEach((param) => {
+        /**
+         * 1.如果是日期类型,需要转化为toISOString
+         * 2.如果是纯对象类型,则转化为JSON字符串
+         * 3.处理key和value的转义并原话为原始传入的参数key和value
+         */
+        if (isDate(param)) {
+          param = param.toISOString()
+        } else if (isPlainObject(param)) {
+          param = JSON.stringify(param)
+        }
+        const encodeKey = encode(key)
+        const encodeValue = encode(param)
+        parts.push(`${encodeKey}=${encodeValue}`)
+      })
+    })
+
+    /**
+     * 1.将key和value拼接的值数组进行拼接
+     * 2.去掉路径中的hash符号#
+     * 3.保留url中之前的参数值,如果有则添加&没有则是?
+     */
+    serializedParams = parts.join('&')
+  }
+
   if (serializedParams) {
     const hashIndex = url.indexOf('#')
     if (hashIndex !== -1) {
@@ -106,4 +119,21 @@ function resovleURL(url: string): { protocol: string; host: string } {
   return { protocol, host }
 }
 
-export { buildUrl }
+/**
+ * 判断url是不是一个绝对路径
+ * @param url
+ * @returns
+ */
+export function isAbsolueURL(url: string): boolean {
+  return /(^[a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+}
+
+/**
+ * 拼接baseURL和relativeURL
+ * @param baseURL
+ * @param relativeURL
+ * @returns
+ */
+export function combineURL(baseURL: string, relativeURL?: string) {
+  return relativeURL ? baseURL.replace(/\/$/, '') + '/' + relativeURL.replace(/^\//, '') : baseURL
+}

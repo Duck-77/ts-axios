@@ -26,8 +26,8 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'XSRF-TOKEN-D','Authorization'],
 }
 
-//设置cors之后就不需要设置预检请求了
-// app.use(cors(corsOptions))
+// 设置cors之后就不需要设置预检请求了
+app.use(cors(corsOptions))
 
 // app.all('/*', async function (req, res, next) {
 //   console.log("请求",req.path)
@@ -50,10 +50,11 @@ router.post('/credentials/post', function (req, res) {
   res.json(req.cookies)
 })
 //对于跨域请求，浏览器需要先发送一个options请求
-router.options('/credentials/post', function (req, res) {
-  res.set(AccessControlAllows)
-  res.sendStatus(204)
-})
+//如果设置了cors,cors会自动处理options请求
+// router.options('/credentials/post', function (req, res) {
+//   res.set(AccessControlAllows)
+//   res.sendStatus(204)
+// })
 
 router.get('/cross/xsrf/get', function (req, res) {
   /** 跨域情况下,需要从请求头中获取token */

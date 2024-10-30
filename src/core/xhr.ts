@@ -81,11 +81,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     /** 处理响应 */
     request.onreadystatechange = () => {
-      /** 正在接收流式数据 */
-      if (request.readyState === 3) {
-        console.log('request.responseText', request.responseText)
-      }
-
+      // redayState !== 4
       if (request.readyState !== XMLHttpRequest.DONE) {
         return
       }

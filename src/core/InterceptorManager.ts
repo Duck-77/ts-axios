@@ -28,8 +28,8 @@ export default class InterceptorManager<T> {
    * @returns
    */
   use(
-    onFullfilled: ((value: T) => T | Promise<T>) | null,
-    onRejected: ((error: any) => any) | null,
+    onFullfilled?: ((value: T) => T | Promise<T>) | null,
+    onRejected?: ((error: any) => any) | null,
   ): number {
     const interceptor = { onFullfilled, onRejected }
     this.interceptors.push(interceptor)

@@ -27,11 +27,20 @@ export function isPlainObject(value: any): value is Object {
 
 /**
  * 判断一个值是FormData类型
- * @param {any} value
+ * @param value
  * @returns
  */
 export function isFormData(value: any): value is FormData {
   return typeof value !== 'undefined' && value instanceof FormData
+}
+
+/**
+ * 判断一个值是URLSearchParams类型
+ * @param value
+ * @returns
+ */
+export function isURLSearchParams(value: any): value is URLSearchParams {
+  return typeof value !== 'undefined' && value instanceof URLSearchParams
 }
 
 /**
