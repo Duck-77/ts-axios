@@ -22,11 +22,7 @@ function encode(value: string): string {
  * @param params Axios配置的params参数
  * @returns
  */
-export function buildURL(
-  url: string,
-  params?: any,
-  paramsSerializer?: (params: any) => string,
-): string {
+export function buildURL(url: string, params?: any, paramsSerializer?: (params: any) => string): string {
   if (!params) {
     return url
   }
@@ -101,9 +97,7 @@ export function buildURL(
 export function isSameOriginURL(url: string): boolean {
   const targetOrigin = resovleURL(url)
   const currentOrigin = resovleURL(window.location.href)
-  return (
-    targetOrigin.host === currentOrigin.host && targetOrigin.protocol === currentOrigin.protocol
-  )
+  return targetOrigin.host === currentOrigin.host && targetOrigin.protocol === currentOrigin.protocol
 }
 
 /**

@@ -19,7 +19,7 @@ export default async function dispatchRequest(config: AxiosRequestConfig): Promi
  * @param config
  */
 function processConfig(config: AxiosRequestConfig): void {
-  config.url = transformUrl(config)
+  config.url = transformURL(config)
   config.headers = flattenHeaders(config.headers, config.method!)
   config.data = transform(config.data, config.headers, config.transformRequest)
 }
@@ -29,7 +29,7 @@ function processConfig(config: AxiosRequestConfig): void {
  * @param config
  * @returns
  */
-export function transformUrl(config: AxiosRequestConfig): string {
+export function transformURL(config: AxiosRequestConfig): string {
   let { url = '', params, paramsSerializer, baseURL } = config
   if (baseURL && !isAbsolueURL(url)) {
     url = combineURL(baseURL, url)

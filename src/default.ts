@@ -24,7 +24,6 @@ const defaultConfig: AxiosDefaults = {
       return tranformResponse(data, response)
     },
   ],
-
   validateStatus(status) {
     return status >= 200 && status < 300
   },

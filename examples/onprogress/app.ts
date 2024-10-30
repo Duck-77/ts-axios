@@ -28,9 +28,9 @@ function loadProgressBar() {
         nProgress.done()
         return response
       },
-      (error) => {
+      (e) => {
         nProgress.done()
-        return Promise.reject(error)
+        return Promise.reject(e)
       },
     )
   }
@@ -40,23 +40,38 @@ function loadProgressBar() {
   setupStopProgress()
 }
 
-loadProgressBar()
+try {
+  loadProgressBar()
+} catch (e) {
+  console.log('loadProgressBar error:', e)
+}
 
 const downloadBtn = document.querySelector('#download')
 
 downloadBtn?.addEventListener('click', (e) => {
-  instance.get(
-    'https://img1.sycdn.imooc.com/szimg/65967fa40865fe8805400304.jpg',
-  )
+  instance
+    .get('https://img1.sycdn.imooc.com/szimg/65967fa40865fe8805400304.jpg')
+    .catch((e) => {
+      console.log('error', e)
+    })
 })
 
 const uploadBtn = document.querySelector('#upload')
 
-uploadBtn?.addEventListener('click', (e) => {
+uploadBtn?.addEventListener('click', async (e) => {
   const data = new FormData()
   const fileEl = document.querySelector('#file') as HTMLInputElement
   if (fileEl.files) {
     data.append('file', fileEl.files[0])
-    instance.post('/onprogress/upload', data)
+    try {
+      await instance.post('/onprogress/upload', data)
+      // 处理成功后的逻辑，比如显示上传成功的消息
+      console.log('Upload successful')
+    } catch (error) {
+      console.error('Upload error:', error)
+      // 处理错误的逻辑，比如显示错误消息
+    }
+  } else {
+    console.error('No file selected')
   }
 })

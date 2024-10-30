@@ -7,13 +7,7 @@ class AxiosError extends Error {
   request?: any
   response?: AxiosResponse
 
-  constructor(
-    message: string,
-    config: AxiosRequestConfig,
-    code?: string | null,
-    request?: any,
-    response?: AxiosResponse
-  ) {
+  constructor(message: string, config: AxiosRequestConfig, code?: string | null, request?: any, response?: AxiosResponse) {
     super(message)
     this.config = config
     this.code = code
@@ -31,7 +25,7 @@ export function createAxiosError(
   config: AxiosRequestConfig,
   code?: string | null,
   request?: any,
-  response?: AxiosResponse
+  response?: AxiosResponse,
 ): AxiosError {
   return new AxiosError(message, config, code, request, response)
 }

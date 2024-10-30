@@ -51,8 +51,8 @@
     "transform": {
       ".(ts|tsx)": "ts-jest"
     },
-    "testEnvironment": "node",
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "testEnvironment": "jsdom",
+    "testRegex": "/test/.*\\.(test|spec)\\.(ts)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -71,12 +71,17 @@
       }
     },
     "collectCoverageFrom": [
-      "src/*.{js,ts}"
+      "src/*.{js,ts}",
+      "src/**/*.{js,ts}"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/test/boot.ts"
     ]
   },
   "prettier": {
     "semi": false,
-    "singleQuote": true
+    "singleQuote": true,
+    "printWidth": 150
   },
   "commitlint": {
     "extends": [
@@ -99,6 +104,7 @@
     "husky": "^1.0.1",
     "jest": "^29.7.0",
     "jest-config": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^8.0.0",
     "lodash.camelcase": "^4.3.0",
     "prompt": "^1.0.0",

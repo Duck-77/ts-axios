@@ -3,8 +3,8 @@
  * @param from
  * @param to
  */
-export function isDate(value: any): value is Date {
-  return Object.prototype.toString.call(value) === '[Object Date]'
+export function isDate(value: unknown): value is Date {
+  return Object.prototype.toString.call(value) === '[object Date]'
 }
 
 /**
@@ -12,7 +12,7 @@ export function isDate(value: any): value is Date {
  * @param from
  * @param to
  */
-export function isObject(value: any): value is Object {
+export function isObject(value: unknown): value is Object {
   return value !== null && typeof value === 'object'
 }
 
@@ -21,7 +21,7 @@ export function isObject(value: any): value is Object {
  * @param from
  * @param to
  */
-export function isPlainObject(value: any): value is Object {
+export function isPlainObject(value: unknown): value is Object {
   return isObject(value) && Object.prototype.toString.call(value) === `[object Object]`
 }
 
@@ -30,7 +30,7 @@ export function isPlainObject(value: any): value is Object {
  * @param value
  * @returns
  */
-export function isFormData(value: any): value is FormData {
+export function isFormData(value: unknown): value is FormData {
   return typeof value !== 'undefined' && value instanceof FormData
 }
 
@@ -39,7 +39,7 @@ export function isFormData(value: any): value is FormData {
  * @param value
  * @returns
  */
-export function isURLSearchParams(value: any): value is URLSearchParams {
+export function isURLSearchParams(value: unknown): value is URLSearchParams {
   return typeof value !== 'undefined' && value instanceof URLSearchParams
 }
 
@@ -57,23 +57,27 @@ export function extend<T, U>(from: T, to: U): T & U {
 
 /**
  * 深度合并多个对象，后面对象的属性覆盖前面的
- * @param objects 合并对象的集合
+ * @param objectArray 合并对象的集合
  */
-export function deepMerge<T extends Record<string, any>>(...objectArray: T[]): T {
+export function deepMerge<T extends Record<string, any> | null | undefined>(...objectArray: T[]): T {
   const result = Object.create(null)
 
   for (const object of objectArray) {
-    // 遍历第n个对象
+    /** 遍历第n个对象 */
     if (object) {
       Object.keys(object).forEach((key) => {
         const curValue = object[key]
         if (isPlainObject(curValue)) {
+          /** 如果当前值是对象的话，需要判断之前的result[key]是不是对象 */
           if (isPlainObject(result[key])) {
+            /** 如果result[key]是对象的话，深度合并result[key]与当前值 */
             result[key] = deepMerge(result[key], curValue)
           } else {
+            /** 如果result[key]不是对象，则直接等于当前值 */
             result[key] = deepMerge(curValue)
           }
         } else {
+          /** 如果当前值不是对象，直接替换之前的result[key] */
           result[key] = curValue
         }
       })

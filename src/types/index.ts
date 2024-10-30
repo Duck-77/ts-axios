@@ -26,12 +26,7 @@ export type Method =
 
 type AxiosHeaderValue = string | string[] | number | boolean | null
 type RawRequestHeaders = { [key: string]: AxiosHeaderValue }
-type RequestHeadersList =
-  | 'Accept'
-  | 'Content-Length'
-  | 'User-Agent'
-  | 'Content-Encoding'
-  | 'Authorization'
+type RequestHeadersList = 'Accept' | 'Content-Length' | 'User-Agent' | 'Content-Encoding' | 'Authorization'
 type ContentType =
   | 'text/html'
   | 'text/plain'

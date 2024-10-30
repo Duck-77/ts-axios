@@ -7,12 +7,7 @@ import { AxiosResponse, AxiosTransformer } from '../types'
  * @param callbacks 处理函数,用于管道式的处理data
  * @returns 处理后的data
  */
-function tansform(
-  data: any,
-  headers: any,
-  transformers?: AxiosTransformer | AxiosTransformer[],
-  response?: AxiosResponse,
-): any {
+function tansform(data: any, headers: any, transformers?: AxiosTransformer | AxiosTransformer[], response?: AxiosResponse): any {
   if (!transformers) {
     return data
   }

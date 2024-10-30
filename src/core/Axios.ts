@@ -1,12 +1,5 @@
-import {
-  AxiosDefaults,
-  AxiosPromise,
-  AxiosRequestConfig,
-  AxiosResponse,
-  IntervalAxiosRequestConfig,
-  Method,
-} from '../types'
-import dispatchRequest, { transformUrl } from './dispatch'
+import { AxiosDefaults, AxiosPromise, AxiosRequestConfig, AxiosResponse, IntervalAxiosRequestConfig, Method } from '../types'
+import dispatchRequest, { transformURL } from './dispatch'
 import InterceptorManager, { Interceptor } from './InterceptorManager'
 import configMerge from './merge'
 
@@ -112,7 +105,7 @@ class Axios {
 
   getUri(config?: AxiosRequestConfig): string {
     config = configMerge(this.defaults, config)
-    return transformUrl(config)
+    return transformURL(config)
   }
 
   private _request_without_data(method: Method, url: string, config?: AxiosRequestConfig) {

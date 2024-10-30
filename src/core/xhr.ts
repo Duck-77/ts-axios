@@ -67,15 +67,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       if (!validateStatus || validateStatus(response.status)) {
         resolve(response)
       } else {
-        reject(
-          createAxiosError(
-            `request failed with status code: ${response.status}`,
-            config,
-            null,
-            request,
-            response,
-          ),
-        )
+        reject(createAxiosError(`request failed with status code: ${response.status}`, config, null, request, response))
       }
     }
 
