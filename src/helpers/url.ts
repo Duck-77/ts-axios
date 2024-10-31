@@ -1,7 +1,7 @@
 import { isDate, isPlainObject, isURLSearchParams } from './utils'
 
 /**
- * 将传入的字符串进行URLComponent化,但是将特殊字符的转化还原
+ * 将传入的字符串进行编码,安全传输,但是将特殊字符的转化还原
  * @param value 将要编码的字符串
  * @returns
  */
@@ -31,8 +31,8 @@ export function buildURL(url: string, params?: any, paramsSerializer?: (params: 
 
   if (paramsSerializer) {
     serializedParams = paramsSerializer(params)
-  } else if (isURLSearchParams(url)) {
-    serializedParams = url.toString()
+  } else if (isURLSearchParams(params)) {
+    serializedParams = params.toString()
   } else {
     const parts: string[] = []
     /**
@@ -119,7 +119,7 @@ function resovleURL(url: string): { protocol: string; host: string } {
  * @returns
  */
 export function isAbsolueURL(url: string): boolean {
-  return /(^[a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
 }
 
 /**
