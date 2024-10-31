@@ -31,7 +31,7 @@ function buildHeaders(headers: any, data: any): any {
 
   // 当传入的值为原始对象类型时，进行headers处理
   if (isPlainObject(data)) {
-    if (headers) {
+    if (headers && !headers['Content-Type']) {
       headers['Content-Type'] = 'application/json;charset=utf-8'
     }
   } else if (data === null && headers['Content-Type']) {
@@ -49,16 +49,18 @@ function buildHeaders(headers: any, data: any): any {
  * @param headers 响应头
  * @returns 响应头的键值对
  */
-function parseResponseHanders(headers: string): { [key: string]: any } {
+function parseResponseHeaders(headers: string): { [key: string]: any } {
   if (!headers) {
     return {}
   }
   let result: { [key: string]: any } = {}
   const sentence = headers.split('\r\n')
   sentence.forEach((item) => {
-    const [key, value] = item.split(':')
+    const [key, ...values] = item.split(':')
+    /** 上面的value中可能存在:,这样就会被分割成多个values */
+    const value = values.join(':')
     if (key && value) {
-      result[key] = value.trim()
+      result[key.trim()] = value.trim()
     }
   })
   return result
@@ -82,4 +84,4 @@ function flattenHeaders(headers: any, method: string): any {
   return headers
 }
 
-export { buildHeaders, buildHeaders as default, parseResponseHanders, flattenHeaders }
+export { buildHeaders, buildHeaders as default, parseResponseHeaders, flattenHeaders }

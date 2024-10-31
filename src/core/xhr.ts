@@ -1,7 +1,7 @@
 import cookie from '../helpers/cookie'
 import { transformResponse } from '../helpers/data'
 import { createAxiosError } from '../helpers/error'
-import { parseResponseHanders } from '../helpers/headers'
+import { parseResponseHeaders } from '../helpers/headers'
 import { isSameOriginURL } from '../helpers/url'
 import { isFormData } from '../helpers/utils'
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../types'
@@ -84,7 +84,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       }
 
       /** 获取响应头 并进行格式的转化（JSON字符串转对象） */
-      const responseHeaders = parseResponseHanders(request.getAllResponseHeaders())
+      const responseHeaders = parseResponseHeaders(request.getAllResponseHeaders())
       /** 获取响应数据 并进行格式的转化（JSON字符串转对象） */
       let responseData = request.responseType !== 'text' ? request.response : request.responseText
       responseData = transformResponse(responseData)
