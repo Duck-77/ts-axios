@@ -1,6 +1,6 @@
 import { deepMerge, extend, isDate, isFormData, isObject, isPlainObject, isURLSearchParams } from '../../src/helpers/utils'
 
-describe('helpers:utils', () => {
+describe('helpers::utils', () => {
   describe('isXX', () => {
     test('show validate Date', () => {
       expect(isDate(new Date())).toBeTruthy()

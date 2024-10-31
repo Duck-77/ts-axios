@@ -1,5 +1,5 @@
 import cookie from '../helpers/cookie'
-import { tranformResponse } from '../helpers/data'
+import { transformResponse } from '../helpers/data'
 import { createAxiosError } from '../helpers/error'
 import { parseResponseHanders } from '../helpers/headers'
 import { isSameOriginURL } from '../helpers/url'
@@ -67,7 +67,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       if (!validateStatus || validateStatus(response.status)) {
         resolve(response)
       } else {
-        reject(createAxiosError(`request failed with status code: ${response.status}`, config, null, request, response))
+        reject(createAxiosError(`request failed with status code: ${response.status}`, config, 'REQUEST ERROR', request, response))
       }
     }
 
@@ -87,7 +87,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       const responseHeaders = parseResponseHanders(request.getAllResponseHeaders())
       /** 获取响应数据 并进行格式的转化（JSON字符串转对象） */
       let responseData = request.responseType !== 'text' ? request.response : request.responseText
-      responseData = tranformResponse(responseData)
+      responseData = transformResponse(responseData)
       /** 获取状态码以及状态信息 */
       const { status, statusText } = request
       /** 设置Promise完成时数据 */
@@ -120,7 +120,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     /** 处理请求失败错误 */
     request.onerror = function handleNetworkError() {
-      reject(createAxiosError('Network Error', config, null, request))
+      reject(createAxiosError('Network Error', config, '', request))
     }
 
     /** 处理请求超时错误 */
