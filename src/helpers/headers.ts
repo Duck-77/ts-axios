@@ -75,10 +75,17 @@ function flattenHeaders(headers: any, method: string): any {
   if (!headers) {
     return headers
   }
-  headers = deepMerge(headers.common, headers[method], headers)
+  /** 忽略method的大小写，将配置中大写的和小写的都合并，最终取出，最后将配置中的大小写默认配置都删除 */
+  headers = deepMerge(headers.common, headers[method.toUpperCase()], headers[method.toLowerCase()], headers)
 
-  const methods = [...useDataMethods, ...noDataMethods, 'common']
-  for (const m of methods) {
+  /** 扁平后删除所有defualt中添加的请求头中的方法：包括 大写，小写，以及common */
+  const lowerCaseDeleteMethods = [...useDataMethods, ...noDataMethods]
+  const upperCaseDeleteMethods = lowerCaseDeleteMethods.reduce<string[]>((pre, cur) => {
+    return [...pre, cur.toUpperCase()]
+  }, [])
+
+  const deleteMethods = [...lowerCaseDeleteMethods, ...upperCaseDeleteMethods, 'common']
+  for (const m of deleteMethods) {
     delete headers[m]
   }
   return headers

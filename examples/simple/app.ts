@@ -1,6 +1,6 @@
 import axios from '../../src'
 
-axios.defaults.headers.common['test'] = 'test'
+axios.defaults.headers!.common['test'] = 'test'
 
 axios({
   method: 'get',

@@ -3,7 +3,6 @@ import { transformResponse } from '../helpers/data'
 import { createAxiosError } from '../helpers/error'
 import { parseResponseHeaders } from '../helpers/headers'
 import { isSameOriginURL } from '../helpers/url'
-import { isFormData } from '../helpers/utils'
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../types'
 
 function xhr(config: AxiosRequestConfig): AxiosPromise {
@@ -67,7 +66,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       if (!validateStatus || validateStatus(response.status)) {
         resolve(response)
       } else {
-        reject(createAxiosError(`request failed with status code: ${response.status}`, config, 'REQUEST ERROR', request, response))
+        reject(createAxiosError(`Request failed with status code: ${response.status}`, config, 'REQUEST ERROR', request, response))
       }
     }
 
@@ -125,7 +124,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     /** 处理请求超时错误 */
     request.ontimeout = function handleTimeoutError() {
-      reject(createAxiosError(`Timeout of ${timeout} ms exceeded`, config, 'ECONNABORTED', request))
+      reject(createAxiosError(`Timeout of ${timeout}ms exceeded`, config, 'ECONNABORTED', request))
     }
 
     /** 发送请求前先检测有没有取消请求 */

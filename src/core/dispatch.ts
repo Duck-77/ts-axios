@@ -37,6 +37,11 @@ export function transformURL(config: AxiosRequestConfig): string {
   return buildURL(url, params, paramsSerializer)
 }
 
+/**
+ * 用于利用reponse管道处理AxiosResponse响应
+ * @param response
+ * @returns
+ */
 function processResponseData(response: AxiosResponse): AxiosResponse {
   return transform(response.data, response.headers, response.config.transformResponse, response)
 }

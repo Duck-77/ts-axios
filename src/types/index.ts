@@ -50,7 +50,7 @@ export interface HeaderDefaults extends AxiosRequestHeaders {
 }
 
 export interface AxiosDefaults<D = any> extends AxiosRequestConfig<D> {
-  headers?: HeaderDefaults & {
+  headers: HeaderDefaults & {
     [key: string]: any
   }
 }
