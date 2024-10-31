@@ -26,12 +26,7 @@ export type Method =
 
 type AxiosHeaderValue = string | string[] | number | boolean | null
 type RawRequestHeaders = { [key: string]: AxiosHeaderValue }
-type RequestHeadersList =
-  | 'Accept'
-  | 'Content-Length'
-  | 'User-Agent'
-  | 'Content-Encoding'
-  | 'Authorization'
+type RequestHeadersList = 'Accept' | 'Content-Length' | 'User-Agent' | 'Content-Encoding' | 'Authorization'
 type ContentType =
   | 'text/html'
   | 'text/plain'
@@ -55,7 +50,7 @@ export interface HeaderDefaults extends AxiosRequestHeaders {
 }
 
 export interface AxiosDefaults<D = any> extends AxiosRequestConfig<D> {
-  headers: HeaderDefaults & {
+  headers?: HeaderDefaults & {
     [key: string]: any
   }
 }
@@ -79,6 +74,7 @@ export interface AxiosRequestConfig<D = any> {
   params?: any
   headers?: AxiosRequestHeaders
   responseType?: XMLHttpRequestResponseType
+  baseURL?: string
   timeout?: number
   transformRequest?: AxiosTransformer | AxiosTransformer[]
   transformResponse?: AxiosTransformer | AxiosTransformer[]
@@ -90,6 +86,7 @@ export interface AxiosRequestConfig<D = any> {
   validateStatus?: (status: number) => boolean
   onDownloadProgress?: (e: ProgressEvent) => void
   onUploadProgress?: (e: ProgressEvent) => void
+  paramsSerializer?: (params: any) => string
 
   [key: string]: any
 }
@@ -138,6 +135,7 @@ export interface Axios {
   post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
   put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
   patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+  getUri(config?: AxiosRequestConfig): string
 }
 
 /**
@@ -148,13 +146,19 @@ export interface AxiosInstance extends Axios {
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }
 
+export interface AxiosClassStatic {
+  new (config: AxiosDefaults): Axios
+}
+
 /**
  *
  */
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosDefaults): AxiosInstance
-
   CancelToken: CancelTokenStatic
   Cancel: CancelStatic
   isCancel: (value: any) => boolean
+  all<T>(promises: Array<T | Promise<T>>): Promise<T[]>
+  spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R
+  Axios: AxiosClassStatic
 }

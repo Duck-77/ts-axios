@@ -236,7 +236,18 @@ function registerAuthRouter() {
   })
 }
 
+function resigterAllRouter() {
+  router.get('/all/get/A', function (req, res) {
+    res.json({ msg: 'hello,A' })
+  })
+
+  router.get('/all/get/B', function (req, res) {
+    res.json({ msg: 'hello,B' })
+  })
+}
+
 registerAuthRouter()
+resigterAllRouter()
 
 app.use(router)
 

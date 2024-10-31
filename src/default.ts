@@ -1,6 +1,6 @@
 import { AxiosDefaults, AxiosResponse } from './types'
 import buildHeaders from './helpers/headers'
-import { tranformRequest, tranformResponse } from './helpers/data'
+import { transformRequest, transformResponse } from './helpers/data'
 
 const defaultConfig: AxiosDefaults = {
   url: '',
@@ -16,15 +16,14 @@ const defaultConfig: AxiosDefaults = {
   transformRequest: [
     function (data: any, headers: any): any {
       buildHeaders(headers, data)
-      return tranformRequest(data)
+      return transformRequest(data)
     },
   ],
   transformResponse: [
     function (data: any, _, response: AxiosResponse): any {
-      return tranformResponse(data, response)
+      return transformResponse(data, response)
     },
   ],
-
   validateStatus(status) {
     return status >= 200 && status < 300
   },

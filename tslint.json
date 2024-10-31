@@ -3,7 +3,8 @@
   "rules": {
     "max-line-length": {
       "options": [120]
-    }
+    },
+    "no-unexpected-multiline": false
   },
   "jsRules": {
     "max-line-length": {

@@ -4,10 +4,7 @@ import { AxiosPromise, AxiosRequestConfig } from '../types'
  * 每一个拦截器拥有一个负责配置和错误处理的属性
  */
 export interface Interceptor<T> {
-  onFullfilled?:
-    | ((value: T) => T | Promise<T>)
-    | ((config: AxiosRequestConfig) => AxiosPromise)
-    | null
+  onFullfilled?: ((value: T) => T | Promise<T>) | ((config: AxiosRequestConfig) => AxiosPromise) | null
   onRejected?: ((error: any) => any) | null
 }
 
@@ -27,10 +24,7 @@ export default class InterceptorManager<T> {
    * @param onRejected 错误捕获
    * @returns
    */
-  use(
-    onFullfilled: ((value: T) => T | Promise<T>) | null,
-    onRejected: ((error: any) => any) | null,
-  ): number {
+  use(onFullfilled?: ((value: T) => T | Promise<T>) | null, onRejected?: ((error: any) => any) | null): number {
     const interceptor = { onFullfilled, onRejected }
     this.interceptors.push(interceptor)
     return this.interceptors.length - 1
