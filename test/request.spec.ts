@@ -251,4 +251,57 @@ describe('requests', () => {
       expect(res.requestHeaders['Content-Type']).toBe('application/json')
     })
   })
+
+  test('should support array text response', () => {
+    let response: AxiosResponse
+
+    axios('/foo', {
+      responseType: 'text',
+    }).then((data) => {
+      response = data
+    })
+
+    return getAjaxRequest().then((request) => {
+      request.respondWith({
+        status: 200,
+        responseText: '{\n  "name": "John",\n  "age": 30\n}',
+      })
+
+      setTimeout(() => {
+        expect(response.config.responseType).toBe('text')
+      }, 100)
+    })
+  })
+
+  test('should support array buffer response', (done) => {
+    let response: AxiosResponse
+
+    function str2ab(str: string) {
+      const buff = new ArrayBuffer(str.length * 2)
+      const view = new Uint16Array(buff)
+      for (let i = 0; i < str.length; i++) {
+        view[i] = str.charCodeAt(i)
+      }
+      return buff
+    }
+
+    axios('/foo', {
+      responseType: 'arraybuffer',
+    }).then((data) => {
+      response = data
+    })
+
+    getAjaxRequest().then((request) => {
+      request.respondWith({
+        status: 200,
+        // @ts-ignore
+        response: str2ab('Hello world'),
+      })
+
+      setTimeout(() => {
+        expect(response.data.byteLength).toBe(22)
+        done()
+      }, 100)
+    })
+  })
 })

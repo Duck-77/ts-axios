@@ -101,20 +101,19 @@ export function isSameOriginURL(url: string): boolean {
 }
 
 /**
- * 获取URL中的协议和域名
+ * Retrieve the protocol and domain name from the URL
  * @param url url
  * @returns /{ protocol, host }/
  */
 function resovleURL(url: string): { protocol: string; host: string } {
   const TagA = document.createElement('a')
   TagA.setAttribute('href', url)
-  // 利用a标签的特性和方法,拿到协议和域名
   const { protocol, host } = TagA
   return { protocol, host }
 }
 
 /**
- * 判断url是不是一个绝对路径
+ * Determine if the URL is an absolute path
  * @param url
  * @returns
  */
@@ -123,9 +122,9 @@ export function isAbsolueURL(url: string): boolean {
 }
 
 /**
- * 拼接baseURL和relativeURL
- * @param baseURL
- * @param relativeURL
+ * Splicing absolute and relative paths
+ * @param baseURL absolute path
+ * @param relativeURL relative path
  * @returns
  */
 export function combineURL(baseURL: string, relativeURL?: string) {

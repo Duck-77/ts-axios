@@ -1,5 +1,5 @@
 /**
- * 判断一个值是日期类型
+ * Determine if a value is of Date type
  * @param from
  * @param to
  */
@@ -8,7 +8,7 @@ export function isDate(value: unknown): value is Date {
 }
 
 /**
- * 判断一个值是对象类型
+ * Determine if a value is of common Object type
  * @param from
  * @param to
  */
@@ -17,7 +17,7 @@ export function isObject(value: unknown): value is Object {
 }
 
 /**
- * 判断一个值是纯对象类型
+ * Determine if a value is of plain Object type
  * @param from
  * @param to
  */
@@ -26,7 +26,7 @@ export function isPlainObject(value: unknown): value is Object {
 }
 
 /**
- * 判断一个值是FormData类型
+ * Determine if a value is of FormData type
  * @param value
  * @returns
  */
@@ -35,7 +35,7 @@ export function isFormData(value: unknown): value is FormData {
 }
 
 /**
- * 判断一个值是URLSearchParams类型
+ * Determine if a value is of URLSearchParams type
  * @param value
  * @returns
  */
@@ -44,9 +44,9 @@ export function isURLSearchParams(value: unknown): value is URLSearchParams {
 }
 
 /**
- * 将 from 中的属性和方法拷贝到 to 中
- * @param from - 源对象
- * @param to - 目标对象
+ * Copy the properties and methods from 'from' to 'to'
+ * @param from - from object
+ * @param to - to object
  */
 export function extend<T, U>(from: T, to: U): T & U {
   for (const key in from) {
@@ -56,8 +56,8 @@ export function extend<T, U>(from: T, to: U): T & U {
 }
 
 /**
- * 深度合并多个对象，后面对象的属性覆盖前面的
- * @param objectArray 合并对象的集合
+ * Deeply merge multiple objects
+ * @param objectArray collection of objects
  */
 export function deepMerge<T extends Record<string, any> | null | undefined>(...objectArray: T[]): T {
   const result = Object.create(null)

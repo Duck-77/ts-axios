@@ -4,6 +4,11 @@ import xhr from './xhr'
 import { flattenHeaders } from '../helpers/headers'
 import transform from './transform'
 
+/**
+ * dispatch XMLHttpRequest and return response
+ * @param config axios request config
+ * @returns
+ */
 export default async function dispatchRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
   processthrowIfrepeatRequest(config)
   processConfig(config)
@@ -12,7 +17,7 @@ export default async function dispatchRequest(config: AxiosRequestConfig): Promi
 }
 
 /**
- * 统一处理Axios配置
+ * process axios config such as url, request headers
  * @param config
  */
 function processConfig(config: AxiosRequestConfig): void {
@@ -22,21 +27,21 @@ function processConfig(config: AxiosRequestConfig): void {
 }
 
 /**
- * 处理URL与Params参数
+ * process request URL and Params
  * @param config
  * @returns
  */
 export function transformURL(config: AxiosRequestConfig): string {
-  let { url = '', params, paramsSerializer, baseURL } = config
-  if (baseURL && !isAbsolueURL(url)) {
+  let { url, params, paramsSerializer, baseURL } = config
+  if (baseURL && !isAbsolueURL(url!)) {
     url = combineURL(baseURL, url)
   }
-  return buildURL(url, params, paramsSerializer)
+  return buildURL(url!, params, paramsSerializer)
 }
 
 /**
- * 用于利用reponse管道处理AxiosResponse响应
- * @param response
+ * process reponse data with headers by axios reponse tranformers
+ * @param response axios response
  * @returns
  */
 function processResponseData(response: AxiosResponse): AxiosResponse {

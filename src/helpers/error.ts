@@ -7,6 +7,7 @@ class AxiosError extends Error {
   request?: XMLHttpRequest
   response?: AxiosResponse
 
+  /* istanbul ignore next */
   constructor(message: string, config: AxiosRequestConfig, code?: string, request?: XMLHttpRequest, response?: AxiosResponse) {
     super(message)
     this.config = config
@@ -15,7 +16,7 @@ class AxiosError extends Error {
     this.response = response
     this.isAxiosError = true
 
-    // 处理TS中调用super时，this指向上出问题的情况
+    /** When super is called in TS, this points to the problem */
     Object.setPrototypeOf(this, AxiosError.prototype)
   }
 }

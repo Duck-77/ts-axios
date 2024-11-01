@@ -246,7 +246,7 @@ function resigterAllRouter() {
   })
 
   router.post('/all/post', function (req, res) {
-    res.json(req.body)
+    res.send({ name: 'qyq' })
   })
 }
 

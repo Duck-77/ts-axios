@@ -3,8 +3,10 @@ import dispatchRequest, { transformURL } from './dispatch'
 import InterceptorManager, { Interceptor } from './InterceptorManager'
 import configMerge from './merge'
 
+/** 拦截器调用链 */
 type InterceptorChain<T> = Interceptor<T>[]
 
+/** Axios实例类 */
 class Axios {
   constructor(defaultConfig: AxiosDefaultConfig) {
     this.defaults = defaultConfig as AxiosDefaults

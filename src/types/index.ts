@@ -1,6 +1,5 @@
 import { CancelStatic, CancelToken, CancelTokenStatic } from './canceltoken'
 import { AxiosInterceptorManager } from './interceptor'
-import { MyOmit, MyPartial } from './utils'
 
 export type Method =
   | 'get'
@@ -35,7 +34,7 @@ type ContentType =
   | 'application/x-www-form-urlencoded'
   | 'application/octet-stream'
 
-export type AxiosRequestHeaders = MyPartial<
+export type AxiosRequestHeaders = Partial<
   RawRequestHeaders & {
     [key in RequestHeadersList]?: AxiosHeaderValue
   } & {
@@ -133,7 +132,7 @@ export interface AxiosError extends Error {
   response?: AxiosResponse
 }
 
-export type NoUrlRequestConfig = MyOmit<AxiosRequestConfig, 'url'>
+export type NoUrlRequestConfig = Omit<AxiosRequestConfig, 'url'>
 
 /**
  * Axios实例属性
@@ -168,7 +167,7 @@ export interface AxiosClassStatic {
 }
 
 /**
- *
+ * Axios静态对象接口
  */
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosDefaultConfig): AxiosInstance

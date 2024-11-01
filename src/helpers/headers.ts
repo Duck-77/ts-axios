@@ -2,9 +2,9 @@ import { noDataMethods, useDataMethods } from '../default'
 import { deepMerge, isFormData, isPlainObject } from './utils'
 
 /**
- * Axios的请求头参数大小写不敏感,但是最终发送给服务器的请求头参数统一为首字母大写
- * @param headers 请求头
- * @param normalizeName 需要规范的请求头参数名
+ * standardize the reuqest header attribute to the specified characters
+ * @param headers request headers
+ * @param normalizeName standardize headers name
  * @returns
  */
 function normalizeHeadersName(headers: any, normalizeName: string): void {
@@ -21,9 +21,9 @@ function normalizeHeadersName(headers: any, normalizeName: string): void {
 }
 
 /**
- * 针对于Data对Header作统一处理
- * @param headers 请求头
- * @param data 请求体
+ * process request headers
+ * @param headers request headers
+ * @param data request data
  */
 function buildHeaders(headers: any, data: any): any {
   normalizeHeadersName(headers, 'Content-Type')
@@ -40,9 +40,9 @@ function buildHeaders(headers: any, data: any): any {
 }
 
 /**
- * 将原生响应字符串转化为键值对对象
- * @param headers 响应头
- * @returns 响应头的键值对
+ * convert the navitve response string into a key value pair object
+ * @param headers response headers
+ * @returns pair object of response headers
  */
 function parseResponseHeaders(headers: string): { [key: string]: any } {
   if (!headers) {
@@ -61,9 +61,9 @@ function parseResponseHeaders(headers: string): { [key: string]: any } {
 }
 
 /**
- * 扁平化请求头，将common中的配置提取出来，并且删除没有用到的方法配置
- * @param headers 请求头
- * @param method 方法名
+ * flatten the merged request headers with request method
+ * @param headers merged request headers
+ * @param method request method
  */
 function flattenHeaders(headers: any, method: string): any {
   if (!headers) {

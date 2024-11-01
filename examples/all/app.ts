@@ -2,8 +2,8 @@ import axios from '../../src'
 axios.defaults.headers.get['c'] = 'a'
 
 const postA = () => {
-  return axios('/foo', {
-    baseURL: 'http://www.example.com'
+  return axios('/all/get/A', {
+    responseType: 'text',
   })
 }
 
