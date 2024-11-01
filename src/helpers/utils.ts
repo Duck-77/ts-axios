@@ -63,21 +63,16 @@ export function deepMerge<T extends Record<string, any> | null | undefined>(...o
   const result = Object.create(null)
 
   for (const object of objectArray) {
-    /** 遍历第n个对象 */
     if (object) {
       Object.keys(object).forEach((key) => {
         const curValue = object[key]
         if (isPlainObject(curValue)) {
-          /** 如果当前值是对象的话，需要判断之前的result[key]是不是对象 */
           if (isPlainObject(result[key])) {
-            /** 如果result[key]是对象的话，深度合并result[key]与当前值 */
             result[key] = deepMerge(result[key], curValue)
           } else {
-            /** 如果result[key]不是对象，则直接等于当前值 */
             result[key] = deepMerge(curValue)
           }
         } else {
-          /** 如果当前值不是对象，直接替换之前的result[key] */
           result[key] = curValue
         }
       })

@@ -26,19 +26,14 @@ function normalizeHeadersName(headers: any, normalizeName: string): void {
  * @param data 请求体
  */
 function buildHeaders(headers: any, data: any): any {
-  // 规范请求头：首字母大写
+  if (!headers) return {}
   normalizeHeadersName(headers, 'Content-Type')
 
-  // 当传入的值为原始对象类型时，进行headers处理
-  if (isPlainObject(data)) {
-    if (headers && !headers['Content-Type']) {
-      headers['Content-Type'] = 'application/json;charset=utf-8'
-    }
-  } else if (data === null && headers['Content-Type']) {
+  if (isPlainObject(data) && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json;charset=utf-8'
+  } else if (data === undefined || data === null) {
     delete headers['Content-Type']
   } else if (isFormData(data)) {
-    /** 下面这一行不要手动添加，浏览器会自动识别上传内容并自动添加multipart/form-data请求头和很关键的的boundary */
-    // headers['Content-Type'] = 'multipart/form-data;'
     delete headers['Content-Type']
   }
   return headers
@@ -57,7 +52,6 @@ function parseResponseHeaders(headers: string): { [key: string]: any } {
   const sentence = headers.split('\r\n')
   sentence.forEach((item) => {
     const [key, ...values] = item.split(':')
-    /** 上面的value中可能存在:,这样就会被分割成多个values */
     const value = values.join(':')
     if (key && value) {
       result[key.trim()] = value.trim()
@@ -75,16 +69,8 @@ function flattenHeaders(headers: any, method: string): any {
   if (!headers) {
     return headers
   }
-  /** 忽略method的大小写，将配置中大写的和小写的都合并，最终取出，最后将配置中的大小写默认配置都删除 */
-  headers = deepMerge(headers.common, headers[method.toUpperCase()], headers[method.toLowerCase()], headers)
-
-  /** 扁平后删除所有defualt中添加的请求头中的方法：包括 大写，小写，以及common */
-  const lowerCaseDeleteMethods = [...useDataMethods, ...noDataMethods]
-  const upperCaseDeleteMethods = lowerCaseDeleteMethods.reduce<string[]>((pre, cur) => {
-    return [...pre, cur.toUpperCase()]
-  }, [])
-
-  const deleteMethods = [...lowerCaseDeleteMethods, ...upperCaseDeleteMethods, 'common']
+  headers = deepMerge(headers.common, headers[method.toLowerCase()], headers)
+  const deleteMethods = [...useDataMethods, ...noDataMethods, 'common']
   for (const m of deleteMethods) {
     delete headers[m]
   }

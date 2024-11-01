@@ -244,6 +244,10 @@ function resigterAllRouter() {
   router.get('/all/get/B', function (req, res) {
     res.json({ msg: 'hello,B' })
   })
+
+  router.post('/all/post', function (req, res) {
+    res.json(req.body)
+  })
 }
 
 registerAuthRouter()

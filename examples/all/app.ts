@@ -1,14 +1,10 @@
 import axios from '../../src'
 
-axios.defaults.headers['GET'] = {
-  'D-GET': 'get',
-}
-
-const getA = () => {
+const postA = () => {
   return axios({
-    url: '/A',
-    method: 'get',
-    baseURL: '/all/get',
+    method: 'POST',
+    data: new FormData(),
+    baseURL: '/all/post',
   })
 }
 
@@ -16,9 +12,8 @@ axios.interceptors.request.use((config) => {
   return config
 })
 
-axios.all([getA()]).then(
+axios.all([postA()]).then(
   axios.spread(function (resA) {
     console.log('resA', resA)
   }),
 )
-

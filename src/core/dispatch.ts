@@ -5,11 +5,8 @@ import { flattenHeaders } from '../helpers/headers'
 import transform from './transform'
 
 export default async function dispatchRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
-  // 处理使用同一个cancelToken取消后重复请求的情况
   processRepeatRequest(config)
-  // 处理Axios配置
   processConfig(config)
-  // 发送XHR请求 获取响应
   const res = await xhr(config)
   return processResponseData(res)
 }
@@ -20,8 +17,8 @@ export default async function dispatchRequest(config: AxiosRequestConfig): Promi
  */
 function processConfig(config: AxiosRequestConfig): void {
   config.url = transformURL(config)
-  config.headers = flattenHeaders(config.headers, config.method!)
   config.data = transform(config.data, config.headers, config.transformRequest)
+  config.headers = flattenHeaders(config.headers, config.method!)
 }
 
 /**

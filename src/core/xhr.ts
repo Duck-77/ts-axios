@@ -45,11 +45,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
 
     Object.keys(headers).forEach((name) => {
-      if (!data && name.toLowerCase() === 'content-type') {
-        delete headers[name]
-      } else {
-        request.setRequestHeader(name, headers[name] as string)
-      }
+      request.setRequestHeader(name, headers[name] as string)
     })
 
     /** 允许跨域携带cookie */
