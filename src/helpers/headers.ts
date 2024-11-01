@@ -26,10 +26,10 @@ function normalizeHeadersName(headers: any, normalizeName: string): void {
  * @param data 请求体
  */
 function buildHeaders(headers: any, data: any): any {
-  if (!headers) return {}
   normalizeHeadersName(headers, 'Content-Type')
-
-  if (isPlainObject(data) && !headers['Content-Type']) {
+  if (!headers) {
+    return {}
+  } else if (isPlainObject(data) && !headers['Content-Type']) {
     headers['Content-Type'] = 'application/json;charset=utf-8'
   } else if (data === undefined || data === null) {
     delete headers['Content-Type']

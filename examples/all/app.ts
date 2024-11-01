@@ -1,10 +1,9 @@
 import axios from '../../src'
+axios.defaults.headers.get['c'] = 'a'
 
 const postA = () => {
-  return axios({
-    method: 'POST',
-    data: new FormData(),
-    baseURL: '/all/post',
+  return axios('/foo', {
+    baseURL: 'http://www.example.com'
   })
 }
 

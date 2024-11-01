@@ -5,7 +5,7 @@ import { flattenHeaders } from '../helpers/headers'
 import transform from './transform'
 
 export default async function dispatchRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
-  processRepeatRequest(config)
+  processthrowIfrepeatRequest(config)
   processConfig(config)
   const res = await xhr(config)
   return processResponseData(res)
@@ -43,8 +43,8 @@ function processResponseData(response: AxiosResponse): AxiosResponse {
   return transform(response.data, response.headers, response.config.transformResponse, response)
 }
 
-function processRepeatRequest(config: AxiosRequestConfig): void {
+function processthrowIfrepeatRequest(config: AxiosRequestConfig): void {
   if (config.cancelToken) {
-    config.cancelToken.repeatRequest()
+    config.cancelToken.throwIfrepeatRequest()
   }
 }

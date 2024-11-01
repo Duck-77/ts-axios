@@ -25,6 +25,8 @@ class Axios {
     if (typeof url === 'string') {
       if (!config) {
         config = { url }
+      } else {
+        config = { ...config, url }
       }
     } else {
       config = url

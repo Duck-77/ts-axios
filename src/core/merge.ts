@@ -2,11 +2,11 @@
 import { AxiosRequestConfig } from '../types'
 import { isPlainObject, deepMerge } from '../helpers/utils'
 
-// 默认合并策略: 后面的值不为空则覆盖前面的值
+// 默认合并策略: 使用两者中不为空的值
 function defaultMergeStrategy(value1: any, value2: any): any {
   return typeof value2 !== 'undefined' ? value2 : value1
 }
-// 对于特殊字段的合并策略: 后面的值完全覆盖前面的值
+// 对于特殊字段的合并策略: 仅采用后面的值，后面的值为空则合并结果为undefined
 function speicalMergeStrategy(_: any, value2: any): any {
   return typeof value2 !== 'undefined' ? value2 : undefined
 }
@@ -16,7 +16,7 @@ function deepMergeStrategy(value1: any, value2: any): any {
    * 1. 如果value2是对象的话，直接合并value1和value2
    * 2. 如果value2不是对象但是不为空的话，直接使value2覆盖value1(不关心value1是不是对象)
    * 3. 如果value2为空，且value1为对象的话，则直接使用value1的值
-   * 4. 如果value2为空，则value1不为对象但是有值，直接使用value1的值
+   * 4. 如果value2为空，则value1不为对象，直接使用value1的值
    */
   if (isPlainObject(value2)) {
     return deepMerge(value1, value2)
@@ -24,7 +24,7 @@ function deepMergeStrategy(value1: any, value2: any): any {
     return value2
   } else if (isPlainObject(value1)) {
     return deepMerge(value1)
-  } else if (typeof value1 !== 'undefined') {
+  } else {
     return value1
   }
 }
@@ -58,15 +58,23 @@ const configMerge: IConfigMerge = function (config1, config2) {
   const merged: AxiosRequestConfig = {}
   const toMerge = (key: string) => {
     const mergeFunc = mergeStrategy[key] || defaultMergeStrategy
+    if (key === 'url') {
+      if (!config1[key]) config1[key] = ''
+      if (!config2[key]) config2[key] = ''
+    }
     merged[key] = mergeFunc(config1[key], config2[key])
   }
 
   for (const key in config1) {
-    toMerge(key)
+    if (config1.hasOwnProperty(key)) {
+      toMerge(key)
+    }
   }
 
   for (const key in config2) {
-    toMerge(key)
+    if (config2.hasOwnProperty(key)) {
+      toMerge(key)
+    }
   }
 
   return merged

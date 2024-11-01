@@ -8,7 +8,7 @@ export interface CancelToken {
    */
   reason?: Cancel
 
-  repeatRequest(): void
+  throwIfrepeatRequest(): void
 }
 
 /**

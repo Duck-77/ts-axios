@@ -7,12 +7,11 @@ class CancelToken {
 
   constructor(executor: CancelExecutor) {
     let resolve: (message: Cancel) => void
-    this.promise = new Promise((res) => {
-      resolve = res
+    this.promise = new Promise((_resolve) => {
+      resolve = _resolve
     })
 
     executor((message) => {
-      // 防止同一个CancelToken请求被阻止后多次调用
       if (this.reason) {
         return
       }
@@ -21,7 +20,7 @@ class CancelToken {
     })
   }
 
-  repeatRequest() {
+  throwIfrepeatRequest() {
     if (this.reason) {
       throw this.reason
     }

@@ -35,10 +35,14 @@ type ContentType =
   | 'application/x-www-form-urlencoded'
   | 'application/octet-stream'
 
-type AxiosRequestHeaders = MyPartial<
+export type AxiosRequestHeaders = MyPartial<
   RawRequestHeaders & {
     [key in RequestHeadersList]?: AxiosHeaderValue
-  } & { 'Content-Type': ContentType } & { [key: string]: any }
+  } & {
+    'Content-Type': ContentType
+  } & {
+    [key: string]: any
+  }
 >
 
 export interface IntervalAxiosRequestConfig<D = any> extends AxiosRequestConfig<D> {
@@ -46,14 +50,14 @@ export interface IntervalAxiosRequestConfig<D = any> extends AxiosRequestConfig<
 }
 
 export interface HeaderDefaults extends AxiosRequestHeaders {
-  common?: AxiosRequestHeaders
-  get?: AxiosRequestHeaders
-  delete?: AxiosRequestHeaders
-  options?: AxiosRequestHeaders
-  head?: AxiosRequestHeaders
-  post?: AxiosRequestHeaders
-  patch?: AxiosRequestHeaders
-  put?: AxiosRequestHeaders
+  common: AxiosRequestHeaders
+  get: NonNullable<AxiosRequestHeaders>
+  delete: AxiosRequestHeaders
+  options: AxiosRequestHeaders
+  head: AxiosRequestHeaders
+  post: AxiosRequestHeaders
+  patch: AxiosRequestHeaders
+  put: AxiosRequestHeaders
 }
 
 export interface AxiosDefaults<D = any> extends AxiosRequestConfig<D> {
@@ -63,7 +67,7 @@ export interface AxiosDefaults<D = any> extends AxiosRequestConfig<D> {
 }
 
 export interface AxiosDefaultConfig extends AxiosRequestConfig {
-  headers?: HeaderDefaults & {
+  headers?: Partial<HeaderDefaults> & {
     [key: string]: any
   }
 }
