@@ -34,7 +34,6 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       const CookieValue = cookie.read(xsrfCookieName)
       if (xsrfHeaderName && CookieValue) {
         headers[xsrfHeaderName] = CookieValue
-        headers['Authorization'] = 'Bearer aaa'
       }
     }
 
