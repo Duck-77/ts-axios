@@ -46,11 +46,24 @@ export interface IntervalAxiosRequestConfig<D = any> extends AxiosRequestConfig<
 }
 
 export interface HeaderDefaults extends AxiosRequestHeaders {
-  common: AxiosRequestHeaders
+  common?: AxiosRequestHeaders
+  get?: AxiosRequestHeaders
+  delete?: AxiosRequestHeaders
+  options?: AxiosRequestHeaders
+  head?: AxiosRequestHeaders
+  post?: AxiosRequestHeaders
+  patch?: AxiosRequestHeaders
+  put?: AxiosRequestHeaders
 }
 
 export interface AxiosDefaults<D = any> extends AxiosRequestConfig<D> {
   headers: HeaderDefaults & {
+    [key: string]: any
+  }
+}
+
+export interface AxiosDefaultConfig extends AxiosRequestConfig {
+  headers?: HeaderDefaults & {
     [key: string]: any
   }
 }
@@ -147,14 +160,14 @@ export interface AxiosInstance extends Axios {
 }
 
 export interface AxiosClassStatic {
-  new (config: AxiosDefaults): Axios
+  new (config: AxiosDefaultConfig): Axios
 }
 
 /**
  *
  */
 export interface AxiosStatic extends AxiosInstance {
-  create(config?: AxiosDefaults): AxiosInstance
+  create(config?: AxiosDefaultConfig): AxiosInstance
   CancelToken: CancelTokenStatic
   Cancel: CancelStatic
   isCancel: (value: any) => boolean

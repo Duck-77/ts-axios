@@ -1,4 +1,4 @@
-import { AxiosDefaults, AxiosPromise, AxiosRequestConfig, AxiosResponse, IntervalAxiosRequestConfig, Method } from '../types'
+import { AxiosDefaultConfig, AxiosDefaults, AxiosPromise, AxiosRequestConfig, AxiosResponse, IntervalAxiosRequestConfig, Method } from '../types'
 import dispatchRequest, { transformURL } from './dispatch'
 import InterceptorManager, { Interceptor } from './InterceptorManager'
 import configMerge from './merge'
@@ -6,8 +6,8 @@ import configMerge from './merge'
 type InterceptorChain<T> = Interceptor<T>[]
 
 class Axios {
-  constructor(defaultConfig: AxiosDefaults) {
-    this.defaults = defaultConfig
+  constructor(defaultConfig: AxiosDefaultConfig) {
+    this.defaults = defaultConfig as AxiosDefaults
     this.interceptors = {
       request: new InterceptorManager<IntervalAxiosRequestConfig>(),
       response: new InterceptorManager<AxiosResponse>(),
