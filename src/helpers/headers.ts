@@ -1,4 +1,3 @@
-import { noDataMethods, useDataMethods } from '../default'
 import { deepMerge, isFormData, isPlainObject } from './utils'
 
 /**
@@ -70,7 +69,7 @@ function flattenHeaders(headers: any, method: string): any {
     return headers
   }
   headers = deepMerge(headers.common, headers[method.toLowerCase()], headers)
-  const deleteMethods = [...useDataMethods, ...noDataMethods, 'common']
+  const deleteMethods = ['get', 'delete', 'options', 'head', 'post', 'patch', 'put', 'common']
   for (const m of deleteMethods) {
     delete headers[m]
   }

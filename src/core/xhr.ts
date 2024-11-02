@@ -108,10 +108,17 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
 
     if (cancelToken) {
-      cancelToken.promise.then((reason) => {
-        request.abort()
-        reject(reason)
-      })
+      cancelToken.promise
+        .then((reason) => {
+          request.abort()
+          reject(reason)
+        })
+        .catch(
+          /* istanbul ignore next */
+          () => {
+            //TODO
+          },
+        )
     }
 
     request.send(data)

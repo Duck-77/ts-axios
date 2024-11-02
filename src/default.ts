@@ -41,7 +41,5 @@ const defaultConfig: AxiosDefaults = {
     return status >= 200 && status < 300
   },
 }
-export const useDataMethods = ['post', 'patch', 'put']
-export const noDataMethods = ['get', 'delete', 'options', 'head']
 
 export default defaultConfig
