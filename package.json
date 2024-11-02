@@ -1,11 +1,11 @@
 {
   "name": "ts-axios-qyq",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "",
   "keywords": [],
-  "main": "dist/axios.umd.js",
-  "module": "dist/axios.es5.js",
-  "typings": "dist/types/ts-axios.d.ts",
+  "main": "dist/lib/index.js",
+  "module": "dist/lib/index.js",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist"
   ],

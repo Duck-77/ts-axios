@@ -1,7 +1,6 @@
 /**
  * Determine if a value is of Date type
- * @param from
- * @param to
+ * @param value
  */
 export function isDate(value: unknown): value is Date {
   return Object.prototype.toString.call(value) === '[object Date]'
@@ -9,8 +8,7 @@ export function isDate(value: unknown): value is Date {
 
 /**
  * Determine if a value is of common Object type
- * @param from
- * @param to
+ * @param value
  */
 export function isObject(value: unknown): value is Object {
   return value !== null && typeof value === 'object'
@@ -18,8 +16,7 @@ export function isObject(value: unknown): value is Object {
 
 /**
  * Determine if a value is of plain Object type
- * @param from
- * @param to
+ * @param value
  */
 export function isPlainObject(value: unknown): value is Object {
   return isObject(value) && Object.prototype.toString.call(value) === `[object Object]`
@@ -28,7 +25,6 @@ export function isPlainObject(value: unknown): value is Object {
 /**
  * Determine if a value is of FormData type
  * @param value
- * @returns
  */
 export function isFormData(value: unknown): value is FormData {
   return typeof value !== 'undefined' && value instanceof FormData
@@ -37,7 +33,6 @@ export function isFormData(value: unknown): value is FormData {
 /**
  * Determine if a value is of URLSearchParams type
  * @param value
- * @returns
  */
 export function isURLSearchParams(value: unknown): value is URLSearchParams {
   return typeof value !== 'undefined' && value instanceof URLSearchParams
