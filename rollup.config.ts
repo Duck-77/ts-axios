@@ -18,7 +18,7 @@ export default {
   },
   plugins: [
     json(),
-    typescript({ useTsconfigDeclarationDir: true }),
+    typescript({ useTsconfigDeclarationDir:true }),
     commonjs(),
     resolve({
       extensions: ['.js', '.ts', '.json'],
