@@ -1,4 +1,5 @@
-import axios, { AxiosTransformer } from '../src'
+import axios from '../src'
+import { AxiosTransformer } from '../src/types'
 import { deepMerge } from '../src/helpers/utils'
 import { getAjaxRequest } from './helper'
 

@@ -1,4 +1,5 @@
-import axios, { AxiosRequestConfig, AxiosResponse, IntervalAxiosRequestConfig } from '../src'
+import axios from '../src'
+import { AxiosResponse, IntervalAxiosRequestConfig } from '../src/types'
 import { getAjaxRequest } from './helper'
 
 describe('interceptors', () => {

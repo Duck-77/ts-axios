@@ -2,10 +2,10 @@
   "name": "ts-axios-qyq",
   "version": "1.0.3",
   "description": "",
-  "keywords": [],
+  "keywords": ["ts-axios","qyq"],
   "main": "dist/axios.umd.js",
   "module": "dist/axios.es5.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist"
   ],

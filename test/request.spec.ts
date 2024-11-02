@@ -1,4 +1,5 @@
-import axios, { AxiosResponse, AxiosError } from '../src'
+import axios from '../src'
+import { AxiosResponse, AxiosError } from '../src/types/'
 import { getAjaxRequest } from './helper'
 
 describe('requests', () => {
