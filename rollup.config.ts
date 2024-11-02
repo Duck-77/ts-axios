@@ -9,8 +9,8 @@ const libraryName = 'axios'
 export default {
   input: `src/index.ts`,
   output: [
-    { file: 'dist/axios.umd.js', name: camelCase(libraryName), format: 'umd', sourcemap: true },
-    { file: 'dist/axios.es5.js', format: 'es', sourcemap: true },
+    { file: 'dist/axios.umd.js', name: camelCase(libraryName), format: 'umd', sourcemap: true, exports: 'named' },
+    { file: 'dist/axios.es5.js', format: 'es', sourcemap: true, exports: 'named' },
   ],
   external: [],
   watch: {
@@ -18,7 +18,7 @@ export default {
   },
   plugins: [
     json(),
-    typescript({ useTsconfigDeclarationDir:true }),
+    typescript({ useTsconfigDeclarationDir: true }),
     commonjs(),
     resolve({
       extensions: ['.js', '.ts', '.json'],

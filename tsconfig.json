@@ -6,7 +6,6 @@
     "importHelpers": true,
     "lib": ["ES2015", "ES2016", "ES2017", "DOM"],
     "strict": true,
-    "sourceMap": true,
     "declaration": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
