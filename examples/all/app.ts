@@ -1,22 +1,18 @@
 import axios from '../../src'
+axios.defaults.headers.get['c'] = 'a'
 
-const getA = () => {
-  return axios.get('/A', {
-    baseURL: '/all/get',
-  })
-}
-const getB = () => {
-  return axios.get('/B', {
-    baseURL: '/all/get',
+const postA = () => {
+  return axios('/all/get/A', {
+    responseType: 'text',
   })
 }
 
-axios.all([getA(), getB()]).then(
+axios.interceptors.request.use((config) => {
+  return config
+})
+
+axios.all([postA()]).then(
   axios.spread(function (resA) {
     console.log('resA', resA)
   }),
 )
-
-// axios.all([getA(),getB()]).then(([resA,resB])=>{
-//    console.log(resA,resB)
-// })

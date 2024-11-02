@@ -1,7 +1,7 @@
 const cookie = {
   /**
-   * 传入cookie的名称,获取cookie的值
-   * @param name 需要获取的cookie的值
+   * Enter the name of the cookie and retrieve its value
+   * @param name cookie name
    * @returns
    */
   read(name: string): string | null {

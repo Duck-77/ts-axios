@@ -2,7 +2,7 @@ import { AxiosResponse } from '../types'
 import { isObject, isPlainObject } from './utils'
 
 /**
- * 转换请求时的纯对象类型的data为JSON类型，因为xhr支持很多对象类型，但是不是纯粹的对象类型
+ * Convert the object type in the request body data to JSON type
  * @param data
  * @returns
  */
@@ -14,7 +14,7 @@ function transformRequest(data: any): any {
 }
 
 /**
- * 转化响应中的data，默认情况下，它为json字符串，虽然可以通过为xhr设置responseType=json去转换，但是默认都不会去传递这个参数
+ * Convert JSON in response body to object type
  * @param data
  * @returns
  */

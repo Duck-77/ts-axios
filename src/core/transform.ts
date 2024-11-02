@@ -1,10 +1,11 @@
 import { AxiosResponse, AxiosTransformer } from '../types'
 
 /**
- * 一体式data处理函数
- * @param data 请求体data
- * @param headers 请求头
- * @param callbacks 处理函数,用于管道式的处理data
+ * Used to handle all transformers configured in Axios
+ * @param data request or respone data
+ * @param headers request headers
+ * @param transformers collection of axios transformers
+ * @param response axios response
  * @returns 处理后的data
  */
 function tansform(data: any, headers: any, transformers?: AxiosTransformer | AxiosTransformer[], response?: AxiosResponse): any {

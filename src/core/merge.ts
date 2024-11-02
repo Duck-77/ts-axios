@@ -2,21 +2,21 @@
 import { AxiosRequestConfig } from '../types'
 import { isPlainObject, deepMerge } from '../helpers/utils'
 
-// 默认合并策略: 后面的值不为空则覆盖前面的值
+// default merge strategy: return second value or value that is not null
 function defaultMergeStrategy(value1: any, value2: any): any {
   return typeof value2 !== 'undefined' ? value2 : value1
 }
-// 对于特殊字段的合并策略: 后面的值完全覆盖前面的值
+// For the merging strategy of special fields: only use the following values, if the following values are empty, the merging result will be undefined
 function speicalMergeStrategy(_: any, value2: any): any {
   return typeof value2 !== 'undefined' ? value2 : undefined
 }
-// 对于复杂类型字段的合并策略
+// Merge strategy for complex type fields
 function deepMergeStrategy(value1: any, value2: any): any {
   /**
-   * 1. 如果value2是对象的话，直接合并value1和value2
-   * 2. 如果value2不是对象但是不为空的话，直接使value2覆盖value1(不关心value1是不是对象)
-   * 3. 如果value2为空，且value1为对象的话，则直接使用value1的值
-   * 4. 如果value2为空，则value1不为对象但是有值，直接使用value1的值
+   * 1. if value2 is type of plain Object, merged value1 and value2 and return
+   * 2. if value2 is not type of plain Object, reutrn value2
+   * 3. if value2 is null and value1 is typeof plain Object, return value1
+   * 4. else return value1 (value1 maybe null or common value)
    */
   if (isPlainObject(value2)) {
     return deepMerge(value1, value2)
@@ -24,15 +24,15 @@ function deepMergeStrategy(value1: any, value2: any): any {
     return value2
   } else if (isPlainObject(value1)) {
     return deepMerge(value1)
-  } else if (typeof value1 !== 'undefined') {
+  } else {
     return value1
   }
 }
 
-// 特殊字段
+// Special fields
 const SepicalKeys = ['url', 'data']
 const DeepKeys = ['headers', 'params', 'auth']
-// 根据key来分配不同的合并策略
+// Assign different merging strategies based on the key
 const mergeStrategy: { [key: string]: (form: any, to: any) => any } = {}
 for (const key of SepicalKeys) {
   mergeStrategy[key] = speicalMergeStrategy
@@ -46,9 +46,10 @@ interface IConfigMerge {
 }
 
 /**
- * 合并策略：对于url,等配置，后续的配置要覆盖前面的配置
- * @param config1 配置1
- * @param config2 配置2
+ * Merge strategy: For URL,DATA and other configurations, subsequent configurations should overwrite the previous ones
+ * @param config1 first config
+ * @param config2 second config
+ * @returns merged config
  */
 const configMerge: IConfigMerge = function (config1, config2) {
   if (!config2) {
@@ -58,15 +59,23 @@ const configMerge: IConfigMerge = function (config1, config2) {
   const merged: AxiosRequestConfig = {}
   const toMerge = (key: string) => {
     const mergeFunc = mergeStrategy[key] || defaultMergeStrategy
+    if (key === 'url') {
+      if (!config1[key]) config1[key] = ''
+      if (!config2[key]) config2[key] = ''
+    }
     merged[key] = mergeFunc(config1[key], config2[key])
   }
 
   for (const key in config1) {
-    toMerge(key)
+    if (config1.hasOwnProperty(key)) {
+      toMerge(key)
+    }
   }
 
   for (const key in config2) {
-    toMerge(key)
+    if (config2.hasOwnProperty(key)) {
+      toMerge(key)
+    }
   }
 
   return merged

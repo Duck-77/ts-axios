@@ -10,6 +10,19 @@ const defaultConfig: AxiosDefaults = {
     common: {
       Accept: 'accplication/json, text/plain, */*',
     },
+    get: {},
+    delete: {},
+    options: {},
+    head: {},
+    post: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    patch: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    put: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
   },
   xsrfCookieName: 'XSRF-TOKEN',
   xsrfHeaderName: 'X-XSRF-TOKEN',
@@ -28,15 +41,5 @@ const defaultConfig: AxiosDefaults = {
     return status >= 200 && status < 300
   },
 }
-export const useDataMethods = ['post', 'patch', 'put']
-export const noDataMethods = ['get', 'delete', 'options', 'head']
-useDataMethods.forEach((method) => {
-  defaultConfig.headers![method] = {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  }
-})
-noDataMethods.forEach((method) => {
-  defaultConfig.headers![method] = {}
-})
 
 export default defaultConfig

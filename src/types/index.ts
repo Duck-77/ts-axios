@@ -1,6 +1,5 @@
 import { CancelStatic, CancelToken, CancelTokenStatic } from './canceltoken'
 import { AxiosInterceptorManager } from './interceptor'
-import { MyOmit, MyPartial } from './utils'
 
 export type Method =
   | 'get'
@@ -35,10 +34,14 @@ type ContentType =
   | 'application/x-www-form-urlencoded'
   | 'application/octet-stream'
 
-type AxiosRequestHeaders = MyPartial<
+export type AxiosRequestHeaders = Partial<
   RawRequestHeaders & {
     [key in RequestHeadersList]?: AxiosHeaderValue
-  } & { 'Content-Type': ContentType } & { [key: string]: any }
+  } & {
+    'Content-Type': ContentType
+  } & {
+    [key: string]: any
+  }
 >
 
 export interface IntervalAxiosRequestConfig<D = any> extends AxiosRequestConfig<D> {
@@ -47,10 +50,23 @@ export interface IntervalAxiosRequestConfig<D = any> extends AxiosRequestConfig<
 
 export interface HeaderDefaults extends AxiosRequestHeaders {
   common: AxiosRequestHeaders
+  get: NonNullable<AxiosRequestHeaders>
+  delete: AxiosRequestHeaders
+  options: AxiosRequestHeaders
+  head: AxiosRequestHeaders
+  post: AxiosRequestHeaders
+  patch: AxiosRequestHeaders
+  put: AxiosRequestHeaders
 }
 
 export interface AxiosDefaults<D = any> extends AxiosRequestConfig<D> {
-  headers?: HeaderDefaults & {
+  headers: HeaderDefaults & {
+    [key: string]: any
+  }
+}
+
+export interface AxiosDefaultConfig extends AxiosRequestConfig {
+  headers?: Partial<HeaderDefaults> & {
     [key: string]: any
   }
 }
@@ -116,7 +132,7 @@ export interface AxiosError extends Error {
   response?: AxiosResponse
 }
 
-export type NoUrlRequestConfig = MyOmit<AxiosRequestConfig, 'url'>
+export type NoUrlRequestConfig = Omit<AxiosRequestConfig, 'url'>
 
 /**
  * Axios实例属性
@@ -147,14 +163,14 @@ export interface AxiosInstance extends Axios {
 }
 
 export interface AxiosClassStatic {
-  new (config: AxiosDefaults): Axios
+  new (config: AxiosDefaultConfig): Axios
 }
 
 /**
- *
+ * Axios静态对象接口
  */
 export interface AxiosStatic extends AxiosInstance {
-  create(config?: AxiosDefaults): AxiosInstance
+  create(config?: AxiosDefaultConfig): AxiosInstance
   CancelToken: CancelTokenStatic
   Cancel: CancelStatic
   isCancel: (value: any) => boolean
