@@ -12,7 +12,7 @@
   "author": "qiyongqiang <15589092898@163.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/Duck-77/ts-axios"
   },
   "license": "MIT",
   "engines": {
