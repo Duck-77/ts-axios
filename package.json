@@ -33,10 +33,10 @@
     "commit": "git-cz",
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
-    "precommit": "lint-staged",
     "travis-deploy-once": "travis-deploy-once",
     "prepub": "npm run test:prod && npm run build",
-    "pub": "sh release.sh"
+    "pub": "sh release.sh",
+    "prepare": "husky"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -46,7 +46,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
+      "path": "git-cz"
     }
   },
   "jest": {
@@ -116,7 +116,8 @@
     "css-loader": "^7.1.2",
     "cz-conventional-changelog": "^2.1.0",
     "express": "^4.21.1",
-    "husky": "^1.0.1",
+    "git-cz": "^4.9.0",
+    "husky": "^9.1.6",
     "jasmine-ajax": "^4.0.0",
     "jasmine-core": "^5.4.0",
     "jest": "^29.7.0",
