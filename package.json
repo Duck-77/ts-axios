@@ -1,14 +1,27 @@
 {
-  "name": "ts-axios-qyq",
-  "version": "1.0.8",
+  "name": "@duck-77/ts-axios",
+  "version": "1.0.0",
   "description": "",
   "keywords": [],
-  "main": "dist/lib/index.js",
-  "module": "dist/lib/index.js",
+  "main": "index.js",
+  "module": "dist/axios.es5.js",
   "types": "dist/types/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./dist/axios.es5.js",
+        "types": "./dist/types/index.d.ts"
+      },
+      "require": {
+        "default": "./dist/axios.umd.js",
+        "types": "./dist/types/index.d.ts"
+      }
+    }
+  },
   "author": "qiyongqiang <15589092898@163.com>",
   "repository": {
     "type": "git",
@@ -16,7 +29,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=6.0.0"
   },
   "scripts": {
     "dev": "node examples/server.js",
@@ -40,8 +53,7 @@
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "config": {
